@@ -91,7 +91,8 @@ call the validation-function, and at the output-stage call the generate-function
 
 First example-field, the Title for a post:
 
-`$fieldTitle = array(
+`
+$fieldTitle = array(
 	"label" => "Title:",	// The label displayed to the user infront of the field
 	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
 	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
@@ -111,7 +112,8 @@ First example-field, the Title for a post:
 		"empty" => "Please write something in this field [LABEL].",
 		"numeric" => "This field can only contain numeric values."
 	)
-);`
+);
+`
 
 After setting this array up you at the moment need to append this to the array $PAGE_post for the whole thing to work.
 
@@ -122,7 +124,8 @@ To get validation of an error, you must write an error message in the "errors"-a
 Just so that you get the hang of it I'm gonna define another field for this site with a bit different settings (and hardly any comments).
 Basically I want a field, that you don't have to fill in, at most 45 characters, to represent an alternative title.
 
-`$fieldAlternative = array(
+`
+$fieldAlternative = array(
 	"label" => "Alternative title:",
 	"id" => "Alternative",
 	"type" => "area(5*5)",
@@ -132,13 +135,15 @@ Basically I want a field, that you don't have to fill in, at most 45 characters,
 	"errors" => array(
 					"max" => "Please keep number of character's to [MAX] at most.",
 				)
-);`
+);
+`
 
 As you can see in this example we don't have to assign each item in the array, especially clear in the "errors"-array. Just completly delete a setting to not take it into consideration and it will work anyway.
 
 Example to generate a wysiwyg-textarea.
 
-`$fieldWysiwyg = array(
+`
+$fieldWysiwyg = array(
 	"label" => "Wysiwyg:",
 	"id" => "Wysiwyg",
 	"type" => "wysiwyg(5*5)",	// The size here does not do anything exept sizing the textarea IF javascript is not active. All wysiwyg-fields are at this time all at a fixed size.
@@ -150,11 +155,13 @@ Example to generate a wysiwyg-textarea.
 					"min" => "Please write at least something here ='(",
 					"max" => "Please keep number of character's to [MAX] at most."
 				)
-);`
+);
+`
 
 Frequently used - example of an e-mail field =)
 
-`$fieldMail = array(
+`
+$fieldMail = array(
 	"label" => "Mail:",
 	"id" => "Mail",
 	"type" => "text(5)",
@@ -165,31 +172,38 @@ Frequently used - example of an e-mail field =)
 					"max" => "Please keep number of character's to [MAX] at most.",
 					"mail" => "Please use a valid e-mail, [CONTENT] is not valid."
 				)
-);`
+);
+`
 
 Example of absolute minimal amount of setup for a field. These are the only fields needed to get your form jumpstarted!
 
-`$fieldMinimal = array(
+`
+$fieldMinimal = array(
 	"label" => "Minimal:",
 	"type" => "text"
-);`
+);
+`
 
 And finally, prep the $PAGE_post array:
 		
 This form-var is used to fill it with all the fields you will want on your form.
 This var is used for looping out all the fields at a given place, filling the forms with posted form-data, and of course validation.
 
-`$PAGE_form = array(
+`
+$PAGE_form = array(
 				$fieldTitle,
 				$fieldAlternative,
 				$fieldWysiwyg,
 				$fieldMail,
 				$fieldMinimal
-			);`
+			);
+`
 
 After this you can call the generateField-function for each array in the variable PAGE_form. This will be made better in the future.
 The validation is automatically generated when you post the page =)
 
-`foreach ($PAGE_form as $field) {
+`
+foreach ($PAGE_form as $field) {
 	generateField($field);
-}`
+}
+`
