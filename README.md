@@ -91,8 +91,7 @@ call the validation-function, and at the output-stage call the generate-function
 
 First example-field, the Title for a post:
 
-``
-$fieldTitle = array(
+``$fieldTitle = array(
 	"label" => "Title:",	// The label displayed to the user infront of the field
 	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
 	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
@@ -112,8 +111,7 @@ $fieldTitle = array(
 		"empty" => "Please write something in this field [LABEL].",
 		"numeric" => "This field can only contain numeric values."
 	)
-);
-``
+);``
 
 After setting this array up you at the moment need to append this to the array $PAGE_post for the whole thing to work.
 
@@ -124,8 +122,7 @@ To get validation of an error, you must write an error message in the "errors"-a
 Just so that you get the hang of it I'm gonna define another field for this site with a bit different settings (and hardly any comments).
 Basically I want a field, that you don't have to fill in, at most 45 characters, to represent an alternative title.
 
-``
-$fieldAlternative = array(
+``$fieldAlternative = array(
 	"label" => "Alternative title:",
 	"id" => "Alternative",
 	"type" => "area(5*5)",
@@ -135,8 +132,7 @@ $fieldAlternative = array(
 	"errors" => array(
 					"max" => "Please keep number of character's to [MAX] at most.",
 				)
-);
-``
+);``
 
 As you can see in this example we don't have to assign each item in the array, especially clear in the "errors"-array. Just completly delete a setting to not take it into consideration and it will work anyway.
 
