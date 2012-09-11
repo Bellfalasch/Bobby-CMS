@@ -119,22 +119,24 @@
 
 	function generateField($field) {
 		
-		//$thefield = label, id, type, content, description, max, errors(min,max,empty,mail,etc)
-
 		if (isset($field["errors"]))
 			$errors = $field["errors"];
 		else
 			$errors = array();
 
+		// Check if this is a demanded field and generate "Required field"-mark.
 		$demanded = "";
 		if (isset($errors["min"]) && isset($field["min"]))
 			$demanded = " <strong>*</strong>";
 
+		// If it's a text-field (support for other fields will be added later) we can add the maxlentgh attribute, if asked for.
 		$maxlength = "";
-		if (isset($field["max"]))
-			$maxlength = " maxlength=\"" . $field["max"] . "\"";
-		elseif (isset($field["min"]) && isset($errors["exact"]))
-			$maxlength = " maxlength=\"" . $field["min"] . "\"";
+		if (mb_substr($areaType,0,4) == "text") {
+			if (isset($field["max"]))
+				$maxlength = " maxlength=\"" . $field["max"] . "\"";
+			elseif (isset($field["min"]) && isset($errors["exact"]))
+				$maxlength = " maxlength=\"" . $field["min"] . "\"";
+		}
 
 		$description = "";
 		if (isset($field["description"])) {
@@ -143,7 +145,7 @@
 				$description = str_replace("[MIN]",$field["min"],$description);
 			
 			if ( isset($field["max"]) )
-			$description = str_replace("[MAX]",$field["max"],$description);
+				$description = str_replace("[MAX]",$field["max"],$description);
 			
 			$description = str_replace("[LABEL]", str_replace(":","",$field["label"]), $description);
 
@@ -159,6 +161,9 @@
 			$thisId = str_replace(':','',$thisId);
 		}
 
+		$thisName = strtolower($thisId);
+		$thisId = "input" . $thisId;
+
 
 		$strField = "
 				<div class=\"control-group\">
@@ -171,7 +176,8 @@
 			$thisContent = htmlspecialchars($field["content"], ENT_QUOTES);
 
 
-		// Supporting types to set their sizes via the format "type(WIDTH*HEIGHT)" or "type(WIDTH)" (if only "type" is found, default sizes will be used):
+		// Supporting types to set their sizes via the format "type(WIDTH*HEIGHT)" or "type(WIDTH)"
+		// (if only "type" is found, default sizes will be used).
 		$areaType = $field["type"];
 		$areaSizeRows = 0;
 		$areaSizeCols = 5;
@@ -188,24 +194,21 @@
 				$tmp = explode(')',$areaSize[1]);
 				$areaSizeCols = $tmp[0];
 			}
-/*		} else {
-			$areaSizeRows = 5;
-			$areaSizeCols = 5;*/
 		}
 
 
 		// Generate the actual form field based on the "type" setting. Currently only text and area(rows*columns) supported.
 		switch ( mb_substr($areaType,0,4) ) {
 			case "text":
-				$strField .= "<input type=\"text\" name=\"" . strtolower($thisId) . "\" class=\"span" . $areaSizeCols . "\" id=\"input" . $thisId . "\" value=\"" . $thisContent . "\"" . $maxlength . " />";
+				$strField .= "<input type=\"text\" name=\"" . $thisName . "\" class=\"span" . $areaSizeCols . "\" id=\"". $thisId . "\" value=\"" . $thisContent . "\"" . $maxlength . " />";
 				break;
 
 			case "area":
-				$strField .= "<textarea rows=\"" . $areaSizeRows . "\" name=\"" . strtolower($thisId) . "\" class=\"mceNoEditor span" . $areaSizeCols . "\" id=\"input" . $thisId . "\">" . $thisContent . "</textarea>";
+				$strField .= "<textarea rows=\"" . $areaSizeRows . "\" name=\"" . $thisName . "\" class=\"mceNoEditor span" . $areaSizeCols . "\" id=\"" . $thisId . "\">" . $thisContent . "</textarea>";
 				break;
 
 			case "wysi":
-				$strField .= "<textarea rows=\"" . $areaSizeRows . "\" name=\"" . strtolower($thisId) . "\" class=\"mceEditor span" . $areaSizeCols . "\" id=\"input" . $thisId . "\">" . $thisContent . "</textarea>";
+				$strField .= "<textarea rows=\"" . $areaSizeRows . "\" name=\"" . $thisName . "\" class=\"mceEditor span" . $areaSizeCols . "\" id=\"" . $thisId . "\">" . $thisContent . "</textarea>";
 				break;
 		}
 
