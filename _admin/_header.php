@@ -131,6 +131,8 @@
 
 		// If it's a text-field (support for other fields will be added later) we can add the maxlentgh attribute, if asked for.
 		$maxlength = "";
+		$areaType = $field["type"];
+		
 		if (mb_substr($areaType,0,4) == "text") {
 			if (isset($field["max"]))
 				$maxlength = " maxlength=\"" . $field["max"] . "\"";
@@ -178,7 +180,6 @@
 
 		// Supporting types to set their sizes via the format "type(WIDTH*HEIGHT)" or "type(WIDTH)"
 		// (if only "type" is found, default sizes will be used).
-		$areaType = $field["type"];
 		$areaSizeRows = 0;
 		$areaSizeCols = 5;
 
