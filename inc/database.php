@@ -13,8 +13,8 @@
 		// LIVE (change to your settings)
 		DEFINE('DB_USER', 'xxx');
 		DEFINE('DB_PASS', 'xxx');
-		DEFINE('DB_HOST', 'xxx');
-		DEFINE('DB_NAME', 'xxx');
+		DEFINE('DB_HOST', 'localhost');
+		DEFINE('DB_NAME', 'test');
 	}
 	
 	// Set up database class
