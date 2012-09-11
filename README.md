@@ -92,28 +92,27 @@ call the validation-function, and at the output-stage call the generate-function
 
 First example-field, the Title for a post:
 
->
-$fieldTitle = array(
-	"label" => "Title:",	// The label displayed to the user infront of the field
-	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
-	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
-	
-	// A description of what this field is for and how to fill it in, keywords MIN, MAX, and LABEL can be used to extract numbers from the validation setup of this field.
-	"description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
-	
-	"min" => "2",		// Minimum chars. If empty then this field is allow to not be set.
-	"max" => "45",		// Maximum chars. If empty you can write as much text as you'd want. On text-fields the maxlength-attribute is set.
-	"null" => false,	// If true this field be transformed to null if it's empty, instead of being an empty string. This is for later database-saving.
-
-	// The errors-array, this array controls validation. If one type of validation is set the code WILL validate for this when you try and save, and it WILL stop you from saving the form.
-	"errors" => array(
-		"min" => "Please keep number of character's on at least [MIN].", // Use keyword MIN to extract this value from the setup. If this string is NOT set but you set the "min"-setting, we will not validate.
-		"max" => "Please keep number of character's to [MAX] at most.",
-		"exact" => "Please keep number of character's to exactly [MIN].", // If text is in this validation-form, only the MIN-validation will be used for validation even if the MAX-value is set.
-		"empty" => "Please write something in this field [LABEL].",
-		"numeric" => "This field can only contain numeric values."
-	)
-);
+> $fieldTitle = array(
+> 	"label" => "Title:",	// The label displayed to the user infront of the field
+> 	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
+> 	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
+> 	
+> 	// A description of what this field is for and how to fill it in, keywords MIN, MAX, and LABEL can be used to extract numbers from the validation setup of this field.
+> 	"description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
+> 	
+> 	"min" => "2",		// Minimum chars. If empty then this field is allow to not be set.
+> 	"max" => "45",		// Maximum chars. If empty you can write as much text as you'd want. On text-fields the maxlength-attribute is set.
+> 	"null" => false,	// If true this field be transformed to null if it's empty, instead of being an empty string. This is for later database-saving.
+> 
+> 	// The errors-array, this array controls validation. If one type of validation is set the code WILL validate for this when you try and save, and it WILL stop you from saving the form.
+> 	"errors" => array(
+> 		"min" => "Please keep number of character's on at least [MIN].", // Use keyword MIN to extract this value from the setup. If this string is NOT set but you set the "min"-setting, we will not validate.
+> 		"max" => "Please keep number of character's to [MAX] at most.",
+> 		"exact" => "Please keep number of character's to exactly [MIN].", // If text is in this validation-form, only the MIN-validation will be used for validation even if the MAX-value is set.
+> 		"empty" => "Please write something in this field [LABEL].",
+> 		"numeric" => "This field can only contain numeric values."
+> 	)
+> );
 
 After setting this array up you at the moment need to append this to the array $PAGE_post for the whole thing to work.
 
