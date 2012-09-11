@@ -92,7 +92,8 @@ call the validation-function, and at the output-stage call the generate-function
 
 First example-field, the Title for a post:
 
-``$fieldTitle = array(
+>
+$fieldTitle = array(
 	"label" => "Title:",	// The label displayed to the user infront of the field
 	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
 	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
@@ -112,7 +113,7 @@ First example-field, the Title for a post:
 		"empty" => "Please write something in this field [LABEL].",
 		"numeric" => "This field can only contain numeric values."
 	)
-);``
+);
 
 After setting this array up you at the moment need to append this to the array $PAGE_post for the whole thing to work.
 
