@@ -19,19 +19,19 @@ content, but at the moment you have to manually update all the files to the new 
 Updates:
 ----------------
 
-*0.8*
+### 0.8
 This update makes for an complete overhaul of how forms are set up and validated. You now define your settings in an associative array for each
 form field you wanna have on each page (se example1.php). This will then generate the COMPLETE form, AND it's validation. Nothing short of epic!
 The UPDATE/INSERT to the database is still handled manually ... automation set to come for 1.0.
 
-*0.5*
+### 0.5
 Changed the file-structure a bit and included default files needed to run this admin (../inc/*), and took the admin to it's own repository on
 GitHub. The admin can now be "installed" and runned without any of my other templates in place beforehand.
 
-*0.3*
+### 0.3
 I have set it up on my GitHub for "Super-Simple-Web-Templates", extremly basic set up, just the files needed and kind of bad/error proune examples.
 
-*0.1*
+### 0.1
 On the sixth day, Bobby created this admin to ease the burden of setting up a full Wordpress for clients who only need super easy administration.
 
 
@@ -49,39 +49,40 @@ Dependencies:
 ----------------
 You must use this admin on a project based on one of my other simple PHP templates, at minimum these files:
 
-../inc/database.php - Needed for accessing the database (password etc), and processing SQL's in the admin's own "_database.php".
-../inc/functions.php - The admin uses some basic functions added in this file, used by my other "PHP-templates".
+* ../inc/database.php - Needed for accessing the database (password etc), and processing SQL's in the admin's own "_database.php".
+* ../inc/functions.php - The admin uses some basic functions added in this file, used by my other "PHP-templates".
 
-This admin is based on Bootstrap by Twitter.
+This admin is based on Bootstrap by Twitter (included) and TinyMCE (included).
 
 
 Basic structure:
 ----------------
 
-"_header.php":
+### "_header.php":
 The power file =) This file contains the two functions that will 1. Generate your form HTML, and 2. Ensure PHP-validation of
 your form when a user submits it.
 In "_header.php" we have a function called generateField, and a function called validateField.
 Both these functions takes this array as input and from that, depending on each function, generates the correct
 html and validation based on what you have written.
 
-File structure:
-_database.php - Just SQL, this file uses the main folders database-file and all of it's functions.
-_header.php - See above.
-_footer.php - The last few bits of html etc for the admin.
-assets/admin.css - The menu is taken from Bootstrap web, also other styles that is needed for the admin is added in this file.
-assets/bootstrap.min.css - The projects uses Bootstrap 2.0, check their site for more info: http://twitter.github.com/bootstrap/scaffolding.html
+### File structure:
+* _database.php - Just SQL, this file uses the main folders database-file and all of it's functions.
+* _header.php - See above.
+* _footer.php - The last few bits of html etc for the admin.
+* assets/admin.css - The menu is taken from Bootstrap web, also other styles that is needed for the admin is added in this file.
+* assets/bootstrap.min.css - The projects uses Bootstrap 2.0, check their site for more info: http://twitter.github.com/bootstrap/scaffolding.html
 
-Files:
-index.php - validates your login, and also handles log out
-users.php - create, delete, and edit users
+### Files:
+* index.php - validates your login, and also handles log out
+* users.php - create, delete, and edit users
 
+### Examples:
 Example files just so you can see how I have set up different files in my live projects:
-example1.php - THE ONLY EXAMPLE WITH THE NEW 0.8-STYLE OF SETTING UP FORMS!!!
-campaign.php - OLD SETUP!!!
-datespan.php - OLD SETUP!!!
-discounts.php - OLD SETUP!!!
-overview.php - OLD SETUP!!!
+* example1.php - THE ONLY EXAMPLE WITH THE NEW 0.8-STYLE OF SETTING UP FORMS!!!
+* campaign.php - OLD SETUP!!!
+* datespan.php - OLD SETUP!!!
+* discounts.php - OLD SETUP!!!
+* overview.php - OLD SETUP!!!
 
 
 Setting up your form fields:
