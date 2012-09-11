@@ -22,7 +22,7 @@ Updates:
 ### 0.8
 This update makes for an complete overhaul of how forms are set up and validated. You now define your settings in an associative array for each
 form field you wanna have on each page (se example1.php). This will then generate the COMPLETE form, AND it's validation. Nothing short of epic!
-The UPDATE/INSERT to the database is still handled manually ... automation set to come for 1.0.
+The UPDATE/INSERT to the database is still handled manually ... automation for this set to come for 1.0.
 
 ### 0.5
 Changed the file-structure a bit and included default files needed to run this admin - `../inc/*` - and took the admin to it's own repository on
@@ -38,7 +38,7 @@ On the sixth day, Bobby created this admin to ease the burden of setting up a fu
 The future:
 ----------------
 * JS-validation onsubmit via jQuery
-* Automatic INSET/UPDATE-generation for MySQL
+* Automatic INSERT/UPDATE-generation for MySQL
 * More field types, like checkbox, radio, hidden, map, dropdown
 * A page_post setting for label append, submit button title, admin level, etc
 * Autogenerate the $PAGE_form array (at the moment this is done manually ...)
@@ -102,19 +102,18 @@ First example-field, the Title for a post:
     
     	// The errors-array, this array controls validation. If one type of validation is set the code WILL validate for this when you try and save, and it WILL stop you from saving the form.
     	"errors" => array(
-    		"min" => "Please keep number of character's on at least [MIN].", // Use keyword MIN to extract this value from the setup. If this string is NOT set but you set the "min"-setting, we will not validate.
+    		"min" => "Please keep number of character's on at least [MIN].", // If this string is NOT set but you set the "min"-setting, we will not validate. If this is set to 1, we treat this field as a subject for "not empty"-validation.
     		"max" => "Please keep number of character's to [MAX] at most.",
     		"exact" => "Please keep number of character's to exactly [MIN].", // If text is in this validation-form, only the MIN-validation will be used for validation even if the MAX-value is set.
-    		"empty" => "Please write something in this field [LABEL].",
     		"numeric" => "This field can only contain numeric values."
     	)
     );
 
-After setting this array up you at the moment need to append this to the array `$PAGE_form` for the whole thing to work.
-
-As you might have noticed in the example, we use a few keywords here and there. `[MIN]`, `[MAX]`, and `[LABEL]` will get replace to the equivalent setting of this field. However, this only work on description and all of the error messages.
-
 To get validation of an error, you must write an error message in the "errors"-array, AND in some times also the "min" and/or "max" setting of the array, see example above for more details.
+
+As you might have noticed in the example, we use a few keywords here and there. `[MIN]`, `[MAX]`, and `[LABEL]` will get replace to the equivalent setting of this field. However, this only work on description and the error messages.
+
+After setting this array up, you have to - at the moment - append this to the array `$PAGE_form` for the whole thing to work.
 
 Just so that you get the hang of it I'm gonna define another field for this site with a bit different settings (and hardly any comments).
 Basically I want a field, that you don't have to fill in, at most 45 characters, to represent an alternative title.
@@ -131,9 +130,9 @@ Basically I want a field, that you don't have to fill in, at most 45 characters,
     				)
     );
 
-As you can see in this example we don't have to assign each item in the array, especially clear in the "errors"-array. Just completly delete a setting to not take it into consideration and it will work anyway.
+As you can see in this example we don't have to assign each item in the array, this is especially clear in the "errors"-array. Just completly delete a setting to not take it into consideration for validation/generation and it will work anyway.
 
-Example to generate a wysiwyg-textarea (supported by TinyMCE).
+Example to generate a wysiwyg-textarea (powered by TinyMCE).
 
     $fieldWysiwyg = array(
     	"label" => "Wysiwyg:",
@@ -164,17 +163,14 @@ Frequently used - example of an e-mail field =)
     				)
     );
 
-Example of absolute minimal amount of setup for a field. These are the only fields needed to get your form jumpstarted!
+Example of absolute minimal amount of setup for a field. These are the only settings needed to get your form jumpstarted!
 
     $fieldMinimal = array(
     	"label" => "Minimal:",
     	"type" => "text"
     );
 
-And finally, prep the `$PAGE_form` array:
-
-This form-var is used to fill it with all the fields you will want on your form.
-This var is used for looping out all the fields at a given place, filling the forms with posted form-data, and of course validation.
+And finally, prep the `$PAGE_form` array. This var is used for looping out all the fields at a given place, filling the forms with posted form-data, and of course set up validation.
 
     $PAGE_form = array(
     				$fieldTitle,
@@ -185,7 +181,7 @@ This var is used for looping out all the fields at a given place, filling the fo
     			);
 
 After this you can call the generateField-function for each array in the variable `$PAGE_form`. This will be made better in the future.
-The validation is automatically generated when you post the page =)
+The validation is automatically generated when you post the page so that you do not have to worry about =)
 
     foreach ($PAGE_form as $field) {
     	generateField($field);
