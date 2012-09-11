@@ -1,0 +1,364 @@
+body {
+	margin: 0;
+	padding: 0;
+	padding-top: 75px;
+	background-color: #eee;
+	background-image: none !important;
+}
+form {
+	margin: 0;
+}
+#input_butik {
+	width: 400px; 
+	height: 200px;
+}
+.btn-danger {
+	float: right;
+}
+/*
+label {
+	display: block;
+	font-weight: bold;
+}
+*/
+label.control-label {
+	font-weight: bold;
+}
+.form-horizontal .help-block {
+	margin-top: 3px;
+	/*font-style: italic;*/
+	color: #bbb;
+	font-size: 9pt;
+}
+#container {
+	width: 940px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding-top: 20px;
+	padding: 20px;
+	overflow: hidden;
+	margin-bottom: 20px;
+
+	-webkit-border-bottom-right-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	   -moz-border-radius-bottomright: 10px;
+	   -moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+
+	-webkit-box-shadow: 0px 0px 15px 2px #D5D5D5;
+			box-shadow: 0px 0px 15px 2px #D5D5D5;
+
+}
+input {
+	margin-bottom: 0 !important;
+}
+.spalt {
+	width: 50%;
+	float: left;
+}
+.debug {
+	clear: both;
+	background-color: red;
+	color: white;
+	padding: 2px 10px;
+	font-weight: bold;
+	font-size: 8pt;
+	position: fixed;
+	top: 77px;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
+	.variable {
+		color: hsla(0,100%,100%,0.7);
+		font-weight: normal;
+	}
+	.separator {
+		color: hsla(0,100%,100%,0.5);
+		padding: 0 15px;
+	}
+	.debug .nav {
+		width: 938px;
+		margin: 0 auto;
+	}
+		.debug .nav.nav-pills ul,
+		.debug .nav.nav-pills ul li {
+		}
+	
+textarea.medium {
+	width: 100%;
+	height: 60px;
+}
+textarea.large {
+	width: 100%;
+	height: 100px;
+}
+#map_canvas {
+	width: 460px;
+	height: 350px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+#placeholder_save {
+	clear: both;
+}
+.form-actions {
+	margin-bottom: 0 !important;
+}
+.input-prepend {
+	/*float: left;
+	margin-left: 10px;*/
+}
+.input-prepend:first-child {
+	margin-left: 0;
+}
+
+
+
+/* Navbar från bootstrap på github */
+.navbar-fixed-top .brand {
+  padding-right: 0;
+  padding-left: 0;
+  margin-left: 20px;
+  float: right;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  -webkit-transition: all .2s linear;
+     -moz-transition: all .2s linear;
+          transition: all .2s linear;
+}
+.navbar-fixed-top .brand:hover {
+  text-decoration: none;
+}
+
+.subnav {
+	width: 100%;
+	height: 36px;
+	background-color: #eeeeee; /* Old browsers */
+	background-repeat: repeat-x; /* Repeat the gradient */
+	background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+	background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
+	background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
+	background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+	background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+}
+.subnav .nav {
+  margin-bottom: 0;
+}
+.subnav .nav > li > a {
+  margin: 0;
+  padding-top:    11px;
+  padding-bottom: 11px;
+  border-left: 1px solid #f5f5f5;
+  border-right: 1px solid #e5e5e5;
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+          border-radius: 0;
+}
+.subnav .nav > .active > a,
+.subnav .nav > .active > a:hover {
+  padding-left: 13px;
+  color: #777;
+  background-color: #e9e9e9;
+  border-right-color: #ddd;
+  border-left: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+     -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+          box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+}
+.subnav .nav > .active > a .caret,
+.subnav .nav > .active > a:hover .caret {
+  border-top-color: #777;
+}
+.subnav .nav > li:first-child > a,
+.subnav .nav > li:first-child > a:hover {
+  border-left: 0;
+  padding-left: 12px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+.subnav .nav > li:last-child > a {
+  border-right: 0;
+}
+.subnav .dropdown-menu {
+  -webkit-border-radius: 0 0 4px 4px;
+     -moz-border-radius: 0 0 4px 4px;
+          border-radius: 0 0 4px 4px;
+}
+
+.subnav-fixed {
+	position: fixed;
+	top: 40px;
+	left: 0;
+	right: 0;
+	z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
+	border-color: #d5d5d5;
+	border-width: 0 0 1px; /* drop the border on the fixed edges */
+	-webkit-border-radius: 0;
+	   -moz-border-radius: 0;
+			border-radius: 0;
+	-webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
+	   -moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
+			box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false); /* IE6-9 */
+}
+.subnav-fixed .nav {
+	width: 938px;
+	margin: 0 auto;
+	padding: 0 1px;
+}
+.subnav .nav > li:first-child > a,
+.subnav .nav > li:first-child > a:hover {
+-webkit-border-radius: 0;
+   -moz-border-radius: 0;
+		border-radius: 0;
+}
+
+/* Style for tables */
+table {
+	width: 100%;
+	margin: 0px 0 40px 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+	table caption {
+		font-style: italic;
+		font-size: 10pt;
+		color: gray;
+		padding: 0 0 3px 0;
+	}
+	table tfoot tr td {
+		font: 8pt Arial, Verdana, sans-serif !important;
+		color: gray;
+		margin: 0;
+		padding: 6px 0 0 8px;
+	}
+		table tfoot tr td a {
+			color: #abb6c3;
+		}
+	table tfoot tr:hover {
+		background-color: transparent;
+	}
+	table tr {
+		border-top: 1px solid #f0f0f0;
+	}
+	table tr:hover {
+		background-color: #fafafa;
+	}
+		table tr th {
+			padding: 8px 3px;
+			font: bold 11pt Arial, Verdana, sans-serif;
+			background-color: #fafafa;
+		}
+		table tr td {
+			padding: 7px 3px;
+			border: 1px solid #f0f0f0;
+			font: 10pt Arial, Verdana, sans-serif;
+		}
+
+
+
+label strong {
+	color: red;
+}
+
+/* *************** */
+/* Debug etc       */
+.errors {
+	/*border: 4px dashed white;*/
+	background-color: #F7F7F9;
+	color: black;
+	padding: 8px 8px 12px 8px;
+	/*border-radius: 3px;*/
+	margin-left: -20px;
+	margin-right: -20px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	border-radius: 0;
+	border-top: 6px solid #7E261B;
+	font-size: 120%;
+}
+	.errors > h4 {
+		padding: 0;
+		margin: 0;
+		color: #7E261B;
+	}
+	.errors > ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+		.errors > ul > li {
+			padding-left: 5px;
+			font-size: 90%;
+			font-style: italic;
+		}
+			.errors > ul > li > i {
+				/*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
+				color: #7E261B;
+				font-weight: bold;
+				font-size: 130%;
+			}
+	.errors p {
+		margin: 5px 0 0 0;
+		padding: 0;
+	}
+		.errors code {
+			font-size: 90%;
+			font-family: monospace;
+			line-height: 110%;
+		}
+
+.debugger {
+	/*background-color: #e0e0e0;*/
+	color: gray;
+	border-top: 4px solid #999;
+	padding: 20px;
+	padding-bottom: 100px;
+	background: #bbbbbb; /* Old browsers */
+	background: -moz-linear-gradient(top,  #cccccc 15%, #e0e0e0 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(15%,#cccccc), color-stop(100%,#e0e0e0)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #bbbbbb 0%, #e0e0e0 15%, #e0e0e0 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #cccccc 15%,#e0e0e0 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #cccccc 15%,#e0e0e0 100%); /* IE10+ */
+	background: linear-gradient(top,  #cccccc 15%,#e0e0e0 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#e0e0e0',GradientType=0 ); /* IE6-9 */
+	clear: both;
+	text-align: left;
+}
+	.debugger > h4 {
+		padding: 0;
+		margin: 0;
+	}
+	.debugger > ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+		.debugger > ul > li {
+			padding-left: 2px;
+			font-style: italic;
+		}
+			.debugger > ul > li > i {
+				color: gray;
+				font-weight: bold;
+				font-size: 130%;
+			}
+	.debugger p {
+		margin: 5px 0 0 0;
+		padding: 0;
+	}
+		.debugger code {
+			font-size: 90%;
+			font-family: monospace;
+			line-height: 110%;
+		}
