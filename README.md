@@ -1,5 +1,10 @@
-Superlight Admin
+Bobby CMS
 ================
+
+A Superlight Admin
+----------------
+
+Bobby CMS is a development name, since more fitting names such as Skeleton CMS, Barebone CMS, Skinny CMS, where all taken. This CMS is intended only for PHP-developers so that they fast and easy can set up an admin on top of their MySQL-database.
 
 This is meant to be used on top of my other PHP-templates. It's super easy and small. You just set up your own SQL's for the admin in
 _database.php and then you're good to go. The footer and header's are used on each file. The header detects which file you're surfing

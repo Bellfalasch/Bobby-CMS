@@ -11,10 +11,10 @@
 		DEFINE('DB_NAME', 'test');				// Select database on server
 	} else {
 		// LIVE (change to your settings)
-		DEFINE('DB_USER', 'nxtfiles_com');
-		DEFINE('DB_PASS', 'eHHPhDy4');
-		DEFINE('DB_HOST', 'localhost');
-		DEFINE('DB_NAME', 'nxtfiles_com');
+		DEFINE('DB_USER', 'xxx');
+		DEFINE('DB_PASS', 'xxx');
+		DEFINE('DB_HOST', 'xxx');
+		DEFINE('DB_NAME', 'xxx');
 	}
 	
 	// Set up database class
