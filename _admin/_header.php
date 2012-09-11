@@ -139,8 +139,12 @@
 		$description = "";
 		if (isset($field["description"])) {
 			$description = $field["description"];
-			$description = str_replace("[MIN]",$field["min"],$description);
+			if ( isset($field["min"]) )
+				$description = str_replace("[MIN]",$field["min"],$description);
+			
+			if ( isset($field["max"]) )
 			$description = str_replace("[MAX]",$field["max"],$description);
+			
 			$description = str_replace("[LABEL]", str_replace(":","",$field["label"]), $description);
 
 			$description = "<p class=\"help-block\">" . $description . "</p>";
@@ -313,7 +317,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf8" />
-	<title><?= $PAGE_name ?> - nxtcms</title>
+	<title><?= $PAGE_title ?> - x</title>
 	<link rel="shortcut icon" href="<?= $SYS_folder ?>/favicon.ico">
 	<link rel="stylesheet" href="<?= $SYS_folder ?>/_admin/assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="<?= $SYS_folder ?>/_admin/assets/admin.css?v=<?php if (DEV_ENV) echo rand(); ?>" />
