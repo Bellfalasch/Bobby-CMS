@@ -119,6 +119,8 @@
 
 	function generateField($field) {
 		
+		//var_dump($field);
+
 		if (isset($field["errors"]))
 			$errors = $field["errors"];
 		else
@@ -224,8 +226,14 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Start the validation loop
+	// ERROR: Troligen skrivs sista datan øver hær inne, før den ær korrekt innan generateField men verkar inte ændras i den funktionen.
 	if (ISPOST) {
-
+/*
+		// ERROR: Denna visar KORREKT data, så det ær inne i næsta loop, garanterat pga byreference och content-sættningen =/
+		foreach ($PAGE_form as &$field) {
+			var_dump($field);
+		}
+*/
 		foreach ($PAGE_form as &$field) {
 
 			$thisId = "";
@@ -313,6 +321,13 @@
 			}
 
 		}
+
+/*
+		// ERROR: Hær ær den OCKSÅ korrekt ... kanske blir fel i generateFields ændå =/
+		foreach ($PAGE_form as &$field) {
+			var_dump($field);
+		}
+*/
 
 	}
 

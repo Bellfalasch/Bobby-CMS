@@ -89,7 +89,7 @@
 
 ?>
 
-	<?php
+<?php
 
 		$PAGE_form = array(
 						$fieldTitle,
@@ -100,6 +100,9 @@
 						$fieldZip1,
 						$fieldZip2
 					);
+
+//		foreach ($PAGE_form as $field)
+//			var_dump($field);
 
 /*
 		var_dump( isset($fieldWysiwyg["hej"]) );			// false
@@ -292,8 +295,12 @@
 		// This is the output area, where all the fields html should be generated for empty fields inserts, and already filled in fields updates.
 		// This fields data/content is generated in the upper parts of this document.
 
-		foreach ($PAGE_form as $field) {
-			generateField($field);
+		foreach ($PAGE_form as $fields) {
+			
+			// ERROR: Redan hær så ær vi fel ute.
+//			var_dump($fields);
+
+			generateField($fields);
 		}
 
 	?>
