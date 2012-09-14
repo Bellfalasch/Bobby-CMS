@@ -225,11 +225,11 @@ New way (the entire `$PAGE_form` array will be output):
 
 This is how you can use the all new folder-type.
 
-    $fieldImage = array(
+    addField( array(
         "label" => "Image:",
         "type" => "folder(3)",
         "settings" => "formats:jpg,jpeg,png,gif; unselectable:Use no image; folder:uploads/;"
-    );
+    ) );
 
 As you can see, you can set the size of the field as usual. The big new thing is the now implemented "settings" value. As of now only the folder-type use this, and the only supported settings are "formats", "unselectable", and "folder". If formats is left empty, or not included, we will list every file from selected folder (but never subfolders). Unselectable is used to in the end of the select-box add an empty unselectable box tightly followed by another box with the text you enter here. Value on this field will be "" (empty string), so you cannot validate "min" => 1 on that box.
 
