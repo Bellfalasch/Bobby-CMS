@@ -216,7 +216,7 @@
 
 //					var_dump($settingsPair);
 
-					switch( trim($settingsPair[0]) )
+					switch( strtolower(trim($settingsPair[0])) )
 					{
 						case "formats":
 							$thisSetFormats = trim($settingsPair[1]);

@@ -24,6 +24,9 @@ content, but at the moment you have to manually update all the files to the new 
 Updates:
 ----------------
 
+### 0.8.6
+Easier add fields to your form with a smoother syntax of setting them all up. The output of the fields are also now just a single function-call. And a bit of other clean ups in the code and the comments.
+
 ### 0.8.5
 Field Type "folder" (also supports setting size) introduced! Uses the all new settings-variable which in a CSS-like manner easily configures more advanced fields. Supports settings for which folder to list (in the select/options-box), select file types (if set, exclude every file format not listed), and set text for "select no file" if that is to be used (added in the end of the folderlist. The folder-type automatically hides subfolders.
 
@@ -49,7 +52,6 @@ The future:
 * Automatic INSERT/UPDATE-generation for MySQL
 * More field types, like checkbox, radio, hidden, map, dropdown
 * A page_post setting for label append, submit button title, admin level, etc
-* Autogenerate the $PAGE_form array (at the moment this is done manually ...)
 * Combine min-max to one field (something like length:2-255)
 
 
@@ -96,26 +98,26 @@ call the validation-function, and at the output-stage call the generate-function
 
 First example-field, the Title for a post:
 
-    $fieldTitle = array(
-    	"label" => "Title:",	// The label displayed to the user infront of the field
-    	"id" => "Title",		// id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
-    	"type" => "text(3)",	// Type of field to generate, currently only "text,area,wysiwyg" is supported.
-    	
-    	// A description of what this field is for and how to fill it in, keywords MIN, MAX, and LABEL can be used to extract numbers from the validation setup of this field.
-    	"description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
-    	
-    	"min" => "2",		// Minimum chars. If empty then this field is allow to not be set.
-    	"max" => "45",		// Maximum chars. If empty you can write as much text as you'd want. On text-fields the maxlength-attribute is set.
-    	"null" => false,	// If true this field be transformed to null if it's empty, instead of being an empty string. This is for later database-saving.
+    addField( array(
+        "label" => "Title:",    // The label displayed to the user infront of the field
+        "id" => "Title",        // id for the field itself (for JS-hooks), always prepended by "input". This will also be used for the "name" attribute.
+        "type" => "text(3)",    // Type of field to generate, currently only "text,area,wysiwyg" is supported.
+        
+        // A description of what this field is for and how to fill it in, keywords MIN, MAX, and LABEL can be used to extract numbers from the validation setup of this field.
+        "description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
+        
+        "min" => "2",       // Minimum chars. If empty then this field is allow to not be set.
+        "max" => "45",      // Maximum chars. If empty you can write as much text as you'd want. On text-fields the maxlength-attribute is set.
+        "null" => false,    // If true this field be transformed to null if it's empty, instead of being an empty string. This is for later database-saving.
     
-    	// The errors-array, this array controls validation. If one type of validation is set the code WILL validate for this when you try and save, and it WILL stop you from saving the form.
-    	"errors" => array(
-    		"min" => "Please keep number of character's on at least [MIN].", // If this string is NOT set but you set the "min"-setting, we will not validate. If this is set to 1, we treat this field as a subject for "not empty"-validation.
-    		"max" => "Please keep number of character's to [MAX] at most.",
-    		"exact" => "Please keep number of character's to exactly [MIN].", // If text is in this validation-form, only the MIN-validation will be used for validation even if the MAX-value is set.
-    		"numeric" => "This field can only contain numeric values."
-    	)
-    );
+        // The errors-array, this array controls validation. If one type of validation is set the code WILL validate for this when you try and save, and it WILL stop you from saving the form.
+        "errors" => array(
+            "min" => "Please keep number of character's on at least [MIN].", // If this string is NOT set but you set the "min"-setting, we will not validate. If this is set to 1, we treat this field as a subject for "not empty"-validation.
+            "max" => "Please keep number of character's to [MAX] at most.",
+            "exact" => "Please keep number of character's to exactly [MIN].", // If text is in this validation-form, only the MIN-validation will be used for validation even if the MAX-value is set.
+            "numeric" => "This field can only contain numeric values."
+        )
+    ) );
 
 To get validation of an error, you must write an error message in the "errors"-array, AND in some times also the "min" and/or "max" setting of the array, see example above for more details.
 
@@ -126,74 +128,98 @@ After setting this array up, you have to - at the moment - append this to the ar
 Just so that you get the hang of it I'm gonna define another field for this site with a bit different settings (and hardly any comments).
 Basically I want a field, that you don't have to fill in, at most 45 characters, to represent an alternative title.
 
-    $fieldAlternative = array(
-    	"label" => "Alternative title:",
-    	"id" => "Alternative",
-    	"type" => "area(5*5)",
-    	"description" => "Teh LOL ...",
-    	"max" => "100",
-    	"null" => true,
-    	"errors" => array(
-    					"max" => "Please keep number of character's to [MAX] at most.",
-    				)
-    );
+    addField( array(
+        "label" => "Alternative title:",
+        "id" => "Alternative",
+        "type" => "area(5*5)",
+        "description" => "Teh LOL ...",
+        "max" => "100",
+        "null" => true,
+        "errors" => array(
+                        "max" => "Please keep number of character's to [MAX] at most.",
+                    )
+    ) );
 
 As you can see in this example we don't have to assign each item in the array, this is especially clear in the "errors"-array. Just completly delete a setting to not take it into consideration for validation/generation and it will work anyway.
 
 Example to generate a wysiwyg-textarea (powered by TinyMCE).
 
-    $fieldWysiwyg = array(
-    	"label" => "Wysiwyg:",
-    	"id" => "Wysiwyg",
-    	"type" => "wysiwyg(5*5)",	// The size here does not do anything exept sizing the textarea IF javascript is not active. All wysiwyg-fields are at this time all at a fixed size.
-    	"description" => "Write a novell!",
-    	"min" => "1",
-    	"max" => "10240",
-    	"null" => true,
-    	"errors" => array(
-    					"min" => "Please write at least something here ='(",
-    					"max" => "Please keep number of character's to [MAX] at most."
-    				)
-    );
+    addField( array(
+        "label" => "Wysiwyg:",
+        "id" => "Wysiwyg",
+        "type" => "wysiwyg(5*5)",   // The size here does not do anything exept sizing the textarea IF javascript is not active. All wysiwyg-fields are at this time all at a fixed size.
+        "description" => "Write a novell!",
+        "min" => "1",
+        "max" => "10240",
+        "null" => true,
+        "errors" => array(
+                        "min" => "Please write at least something here ='(",
+                        "max" => "Please keep number of character's to [MAX] at most."
+                    )
+    ) );
 
 Frequently used - example of an e-mail field =)
 
-    $fieldMail = array(
-    	"label" => "Mail:",
-    	"id" => "Mail",
-    	"type" => "text(5)",
-    	"min" => "1",
-    	"max" => "255",
-    	"errors" => array(
-    					"min" => "Please submit your e-mail address (we hate spam too and will not flood your mailbox).",
-    					"max" => "Please keep number of character's to [MAX] at most.",
-    					"mail" => "Please use a valid e-mail, [CONTENT] is not valid."
-    				)
-    );
+    addField( array(
+        "label" => "Mail:",
+        "id" => "Mail",
+        "type" => "text(5)",
+        "min" => "1",
+        "max" => "255",
+        "errors" => array(
+                        "min" => "Please submit your e-mail address (we hate spam too and will not flood your mailbox).",
+                        "max" => "Please keep number of character's to [MAX] at most.",
+                        "mail" => "Please use a valid e-mail, [CONTENT] is not valid."
+                    )
+    ) );
 
 Example of absolute minimal amount of setup for a field. These are the only settings needed to get your form jumpstarted!
 
+    addField( array(
+        "label" => "Minimal:",
+        "type" => "text"
+    ) );
+
+### New in 0.8.6: easier setup and output!
+
+Instead of the former way of adding each field to the array manually for output we now when defining for instance $fieldMail send it to `addField()` which will populate the `PAGE_form` array.
+
+Old way:
+
     $fieldMinimal = array(
-    	"label" => "Minimal:",
-    	"type" => "text"
+        "label" => "Minimal:",
+        "type" => "text"
     );
 
-And finally, prep the `$PAGE_form` array. This var is used for looping out all the fields at a given place, filling the forms with posted form-data, and of course set up validation.
-
     $PAGE_form = array(
-    				$fieldTitle,
-    				$fieldAlternative,
-    				$fieldWysiwyg,
-    				$fieldMail,
-    				$fieldMinimal
-    			);
+                    $fieldTitle,
+                    $fieldAlternative,
+                    $fieldWysiwyg,
+                    $fieldMail,
+                    $fieldMinimal
+                );
+
+New way:
+
+    addField( array(
+        "label" => "Minimal:",
+        "type" => "text"
+    ) );
+
+    // Done! Adding the new field to $PAGE_form is done automatically by the addField-call around your field settings ^^
 
 After this you can call the generateField-function for each array in the variable `$PAGE_form`. This will be made better in the future.
 The validation is automatically generated when you post the page so that you do not have to worry about =)
 
+Old way:
+
     foreach ($PAGE_form as $field) {
-    	generateField($field);
+        generateField($field);
     }
+
+New way (the entire `$PAGE_form` array will be output):
+
+    outputFormFields();
 
 ### New in 0.8.5: type "folder"
 
@@ -208,3 +234,5 @@ This is how you can use the all new folder-type.
 As you can see, you can set the size of the field as usual. The big new thing is the now implemented "settings" value. As of now only the folder-type use this, and the only supported settings are "formats", "unselectable", and "folder". If formats is left empty, or not included, we will list every file from selected folder (but never subfolders). Unselectable is used to in the end of the select-box add an empty unselectable box tightly followed by another box with the text you enter here. Value on this field will be "" (empty string), so you cannot validate "min" => 1 on that box.
 
 And lastly we have the folder-setting, which needs to be set for the rendering to work. Always end this with /, and this will start in the "_admin"-folder.
+
+All settings are listed in CSS-style so that you have "setting:value;".

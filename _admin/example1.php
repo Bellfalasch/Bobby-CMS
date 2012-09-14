@@ -8,7 +8,27 @@
 
 	// See README.md in root for more information about how to set up and use the form-generator!
 
-	$fieldTitle = array(
+	$PAGE_form = array();
+
+	$this_id = -1;
+	if (isset($_GET['id']))
+		$this_id = qsGet('id');
+
+	// Easier add fields to your form.
+	function addField($field) {
+		global $PAGE_form;
+		array_push($PAGE_form, $field);
+	}
+
+	// More easily call output of html for your forms down the page.
+	function outputFormFields() {
+		global $PAGE_form;
+		foreach ($PAGE_form as $fields) {
+			generateField($fields);
+		}
+	}
+
+	addField( array(
 		"label" => "Title:",
 		"id" => "Title",
 		"type" => "text(3)",
@@ -20,21 +40,9 @@
 						"min" => "Please keep number of character's on at least [MIN].",
 						"max" => "Please keep number of character's to [MAX] at most."
 					)
-	);
+	) );
 
-	$fieldAlternative = array(
-		"label" => "Alternative title:",
-		"id" => "Alternative",
-		"type" => "area(5*5)",
-		"description" => "Teh LOL ...",
-		"max" => "100",
-		"null" => true,
-		"errors" => array(
-						"max" => "Please keep number of character's to [MAX] at most."
-					)
-	);
-
-	$fieldWysiwyg = array(
+	addField( array(
 		"label" => "Wysiwyg:",
 		"id" => "Wysiwyg",
 		"type" => "wysiwyg(5*5)",
@@ -46,9 +54,9 @@
 						"min" => "Please write at least something here ='(",
 						"max" => "Please keep number of character's to [MAX] at most."
 					)
-	);
+	) );
 
-	$fieldMail = array(
+	addField( array(
 		"label" => "Mail:",
 		"id" => "Mail",
 		"type" => "text(5)",
@@ -59,14 +67,14 @@
 						"max" => "Please keep number of character's to [MAX] at most.",
 						"mail" => "Please use a valid e-mail, [CONTENT] is not valid."
 					)
-	);
+	) );
 
-	$fieldMinimal = array(
+	addField( array(
 		"label" => "Minimal:",
 		"type" => "text"
-	);
+	) );
 
-	$fieldZip1 = array(
+	addField( array(
 		"label" => "Zip:",
 		"type" => "text(2)",
 		"min" => "4",
@@ -75,9 +83,11 @@
 						"exact" => "Not valid format - Please submit exactly four characters in this field.",
 						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
 					)
-	);
-	
-	$fieldZip2 = array(
+	) );
+
+// I commented out this example of how to get EXACT 4 CHARACTERS and NUMERIC-validation on a field but without demanding you to fill it in, it can thus be left blank!
+/*
+	addField( array(
 		"label" => "Zip 2:",
 		"type" => "text(2)",
 		"min" => "4",
@@ -85,13 +95,16 @@
 						"exact" => "Not valid format - Please submit exactly four characters in this field.",
 						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
 					)
-	);
+	) );
+*/
 
-	$fieldImage = array(
+	addField( array(
 		"label" => "Image:",
 		"type" => "folder(3)",
 		"settings" => "formats:jpg,jpeg,png,gif; unselectable:Use no image; folder:uploads/;"
-	);
+	) );
+
+// Another folder-example, this one generates the same folder but you must select one file.
 /*	
 	// Set up to demand choice of image!
 	$fieldImage = array(
@@ -105,18 +118,15 @@
 	);
 */
 
-?>
-
-<?php
-
 		// TODO: Shouldn't we be setting "size" as it's own setting per field? Instead of embedding and splitting out from the type-field?
 
 		// TODO: How to add on your 100% custom Fields and validation
 		//			(Kolla i ISPOST med pushError egen validering, och efter generateField-loopen peta ut egna fælt - done!)
 
-		// Nytt ær att anvænde en associative array før att då kan vi senare komma åt all data i arrayen utan att hantera allt detta
-		// i en loop. Exempel: $PAGE_form["title"]["content"]
-
+/*
+		// TODO: Fix this last issue:
+		// Not needed anymore because we use a new array_push-function. Only thing to sort out is the associative thing. because that
+		// will help shit loads when we're gonna save the form later ... Example: $PAGE_form["title"]["content"]
 		$PAGE_form = array(
 						"title" => $fieldTitle,
 						"alternative" => $fieldAlternative,
@@ -127,23 +137,7 @@
 						"zip2" => $fieldZip2,
 						"image" => $fieldImage
 					);
-
-//		foreach ($PAGE_form as $field)
-//			var_dump($field);
-
-/*
-		var_dump( isset($fieldWysiwyg["hej"]) );			// false
-		var_dump( isset($fieldWysiwyg["null"]) );			// true (finns)
-		var_dump( isset($fieldWysiwyg["errors"]["hej"]) );	// false
-		var_dump( isset($fieldWysiwyg["errors"]["min"]) );	// true (finns)
 */
-
-
-		$this_id = -1;
-
-		if (isset($_GET['id']))
-			$this_id = qsGet('id');
-
 ?>
 
 
@@ -182,6 +176,7 @@
 				// UPDATE
 				if ( $this_id > 0 )
 				{
+					// CALL YOUR DATABASE AND UPDATE WITH THIS NEW DATA ... (TODO)
 /*
 					$result = db2_updateCampaign( array(
 								'title' => $formTitle,
@@ -206,6 +201,8 @@
 */
 				// CREATE
 				} else {
+
+					// CALL YOUR DATABASE AND INSERT THIS NEW DATA ... (TODO)
 /*
 					$result = db2_createCampaign( array(
 								'title' => $formTitle,
@@ -246,9 +243,11 @@
 		}
 
 
-		// If we have a given id, fetch form data from database.
+		// TODO: If we have a given id, fetch form data from database.
 		if ( $this_id > 0 )
 		{
+			// Pseudo: Run SQL, get result, loop through it and put each data in the correct "content" of all the arrays.
+			// 		   Maybe time for that setting in the arrays with name of field in database? Hmm ... TODO =)
 			/*
 			$result = db2_getCampaign( array('id' => $this_id) );
 
@@ -309,8 +308,14 @@
 		</h1>
 	</div>
 
-	<?php outputErrors($_SESSION['ERRORS']); ?>
+<?php
 
+	// Now that we are just before the form starts, we can output any errors we might have pushed into the error-array.
+	// Calling this function outputs every error, earlier pushes to the error-array also stops the saving of the form.
+
+	outputErrors($_SESSION['ERRORS']);
+
+?>
 
 <form class="form-horizontal" action="" method="post">
 
@@ -319,16 +324,10 @@
 
 	<?php
 
-		// This is the output area, where all the fields html should be generated for empty fields inserts, and already filled in fields updates.
-		// This fields data/content is generated in the upper parts of this document.
+		// This is the output area, where all the field's html should be generated for empty field's SQL inserts, and already filled in field's SQL updates.
+		// The fields data/content is generated in the upper parts of this document. Just call this function to get the html out.
 
-		foreach ($PAGE_form as $fields) {
-			
-			// ERROR: Redan hær så ær vi fel ute.
-//			var_dump($fields);
-
-			generateField($fields);
-		}
+		outputFormFields();
 
 	?>
 
