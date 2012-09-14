@@ -24,6 +24,9 @@ content, but at the moment you have to manually update all the files to the new 
 Updates:
 ----------------
 
+### 0.8.5
+Field Type "folder" (also supports setting size) introduced! Uses the all new settings-variable which in a CSS-like manner easily configures more advanced fields. Supports settings for which folder to list (in the select/options-box), select file types (if set, exclude every file format not listed), and set text for "select no file" if that is to be used (added in the end of the folderlist. The folder-type automatically hides subfolders.
+
 ### 0.8
 This update makes for an complete overhaul of how forms are set up and validated. You now define your settings in an associative array for each
 form field you wanna have on each page (se example1.php). This will then generate the COMPLETE form, AND it's validation. Nothing short of epic!
@@ -191,3 +194,17 @@ The validation is automatically generated when you post the page so that you do 
     foreach ($PAGE_form as $field) {
     	generateField($field);
     }
+
+### New in 0.8.5: type "folder"
+
+This is how you can use the all new folder-type.
+
+    $fieldImage = array(
+        "label" => "Image:",
+        "type" => "folder(3)",
+        "settings" => "formats:jpg,jpeg,png,gif; unselectable:Use no image; folder:uploads/;"
+    );
+
+As you can see, you can set the size of the field as usual. The big new thing is the now implemented "settings" value. As of now only the folder-type use this, and the only supported settings are "formats", "unselectable", and "folder". If formats is left empty, or not included, we will list every file from selected folder (but never subfolders). Unselectable is used to in the end of the select-box add an empty unselectable box tightly followed by another box with the text you enter here. Value on this field will be "" (empty string), so you cannot validate "min" => 1 on that box.
+
+And lastly we have the folder-setting, which needs to be set for the rendering to work. Always end this with /, and this will start in the "_admin"-folder.
