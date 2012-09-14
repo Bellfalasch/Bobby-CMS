@@ -199,6 +199,78 @@
 			}
 		}
 
+		// For type=folder, and many other, we use the settings-value to CSS-style set a lot of things.
+		if (isset($field["settings"]) && (mb_substr($areaType,0,6) == "folder")) {
+			$thisSettings = explode(";",$field["settings"]);
+			$thisSetDir = "";
+			$thisSetUnselectable = "";
+			$thisSetFormats = "";
+
+			foreach($thisSettings as $settings)
+			{
+				if (trim($settings) != "") {
+				
+//					var_dump($settings);
+
+					$settingsPair = explode(":",trim($settings));
+
+//					var_dump($settingsPair);
+
+					switch( trim($settingsPair[0]) )
+					{
+						case "formats":
+							$thisSetFormats = trim($settingsPair[1]);
+							break;
+
+						case "unselectable":
+							$thisSetUnselectable = trim($settingsPair[1]);
+							break;
+
+						case "folder":
+							$thisSetDir = trim($settingsPair[1]);
+							break;
+					}
+				}
+			}
+
+			// Don't allow processing of the folder-type if no folder is set.
+			if ($thisSetDir == "")
+				$areaType = "text";
+		}
+/*
+		<select id="inputImage" name="image" class="span3">
+		<?php
+			// * Hæmta alla filer i mappen
+			$dir = "../images/campaigns/";
+			$files = scandir($dir);
+			$strSelected = "";
+			$somethingChecked = false;
+
+			foreach($files as $key => $value)
+			{
+				if ($value != '.' && $value != '..')
+				{
+					if ( $formImage === $value ) {
+						$strSelected = ' selected="selected"';
+						$somethingChecked = true;
+					} else
+						$strSelected = '';
+						
+					echo '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
+				}
+			}
+		?>
+		<?php
+			if ($somethingChecked) {
+				$strSelected = '';
+			} else {
+				$strSelected = ' selected="selected"';
+			}
+			echo "<option disabled='disabled'></option>";
+			echo '<option value=""' . $strSelected .'>- Ikke bruk bilde -</option>';
+		?>
+		</select>
+*/
 
 		// Generate the actual form field based on the "type" setting. Currently only text and area(rows*columns) supported.
 		switch ( mb_substr($areaType,0,4) ) {
@@ -212,6 +284,93 @@
 
 			case "wysi":
 				$strField .= "<textarea rows=\"" . $areaSizeRows . "\" name=\"" . $thisName . "\" class=\"mceEditor span" . $areaSizeCols . "\" id=\"" . $thisId . "\">" . $thisContent . "</textarea>";
+				break;
+
+			case "fold":
+				$strField .= "<select name=\"" . $thisName . "\" class=\"span" . $areaSizeCols . "\" id=\"" . $thisId . "\">";
+			
+				$files = scandir($thisSetDir);
+				$strSelected = "";
+				$somethingChecked = false;
+
+				foreach($files as $key => $value)
+				{
+					$write = false;
+
+					if (!is_dir($thisSetDir . $value)) // Exclude all subfolders
+					{
+						if ($thisSetFormats != '') // Check for file-endings ONLY if settings are active
+						{
+							if (strpos($value,".") > 0) // Files without file endings shouldn't be written out
+							{
+								$fileEnding = explode(".",$value);
+
+								//var_dump($thisSetFormats);
+								//var_dump($fileEnding);
+
+								if (strpos($thisSetFormats,$fileEnding[1]) > -1 ) {
+									$write = true;
+//								} else {
+//									$write = false;
+								}
+							}
+						} else {
+							$write = true; // If the formatsetting isn't set, well then we can output anything (except folders).
+						}
+					}
+
+					if ($write) {
+						if ( $thisContent === $value ) {
+							$strSelected = ' selected="selected"';
+							$somethingChecked = true;
+						} else
+							$strSelected = '';
+							
+						$strField .= '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
+					}
+				}
+
+				if ($thisSetUnselectable != '') {
+					if ($somethingChecked) {
+						$strSelected = '';
+					} else {
+						$strSelected = ' selected="selected"';
+					}
+					$strField .= "<option disabled='disabled'></option>";
+					$strField .= '<option value=""' . $strSelected .'>- ' . $thisSetUnselectable . ' -</option>';
+				}
+/*
+			// * Hæmta alla filer i mappen
+			$dir = "../images/campaigns/";
+			$files = scandir($dir);
+			$strSelected = "";
+			$somethingChecked = false;
+
+			foreach($files as $key => $value)
+			{
+				if ($value != '.' && $value != '..')
+				{
+					if ( $formImage === $value ) {
+						$strSelected = ' selected="selected"';
+						$somethingChecked = true;
+					} else
+						$strSelected = '';
+						
+					echo '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
+				}
+			}
+
+			if ($somethingChecked) {
+				$strSelected = '';
+			} else {
+				$strSelected = ' selected="selected"';
+			}
+			echo "<option disabled='disabled'></option>";
+			echo '<option value=""' . $strSelected .'>- Ikke bruk bilde -</option>';
+*/
+//					" . $thisContent . "
+
+				$strField .= "</select>";
 				break;
 		}
 

@@ -87,18 +87,45 @@
 					)
 	);
 
+	$fieldImage = array(
+		"label" => "Image:",
+		"type" => "folder(3)",
+		"settings" => "formats:jpg,jpeg,png,gif; unselectable:Use no image; folder:uploads/;"
+	);
+/*	
+	// Set up to demand choice of image!
+	$fieldImage = array(
+		"label" => "Image:",
+		"type" => "folder",
+		"settings" => "formats:jpg,jpeg,png,gif; folder:uploads/;",
+		"min" => "1",
+		"errors" => array(
+						"min" => "We need you to select a Image for this!"
+					)
+	);
+*/
+
 ?>
 
 <?php
 
+		// TODO: Shouldn't we be setting "size" as it's own setting per field? Instead of embedding and splitting out from the type-field?
+
+		// TODO: How to add on your 100% custom Fields and validation
+		//			(Kolla i ISPOST med pushError egen validering, och efter generateField-loopen peta ut egna fælt - done!)
+
+		// Nytt ær att anvænde en associative array før att då kan vi senare komma åt all data i arrayen utan att hantera allt detta
+		// i en loop. Exempel: $PAGE_form["title"]["content"]
+
 		$PAGE_form = array(
-						$fieldTitle,
-						$fieldAlternative,
-						$fieldWysiwyg,
-						$fieldMail,
-						$fieldMinimal,
-						$fieldZip1,
-						$fieldZip2
+						"title" => $fieldTitle,
+						"alternative" => $fieldAlternative,
+						"wysiwyg" => $fieldWysiwyg,
+						"mail" => $fieldMail,
+						"minimal" => $fieldMinimal,
+						"zip1" => $fieldZip1,
+						"zip2" => $fieldZip2,
+						"image" => $fieldImage
 					);
 
 //		foreach ($PAGE_form as $field)
@@ -150,7 +177,7 @@
 			// If no errors:
 			if (empty($_SESSION['ERRORS'])) {
 				
-				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Din data har postats!</strong> (sparning till databas ej gjord!)</p></div>";
+				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
 
 				// UPDATE
 				if ( $this_id > 0 )
@@ -304,46 +331,6 @@
 		}
 
 	?>
-
-				<div class="control-group">
-					<label class="control-label" for="inputImage">Image</label>
-					<div class="controls">
-						<select id="inputImage" name="image" class="span3">
-						<?php
-							// * Hæmta alla filer i mappen
-							$dir = "../images/campaigns/";
-							$files = scandir($dir);
-							$strSelected = "";
-							$somethingChecked = false;
-
-							foreach($files as $key => $value)
-							{
-								if ($value != '.' && $value != '..')
-								{
-									if ( $formImage === $value ) {
-										$strSelected = ' selected="selected"';
-										$somethingChecked = true;
-									} else
-										$strSelected = '';
-										
-									echo '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
-								}
-							}
-						?>
-						<?php
-							if ($somethingChecked) {
-								$strSelected = '';
-							} else {
-								$strSelected = ' selected="selected"';
-							}
-							echo "<option disabled='disabled'></option>";
-							echo '<option value=""' . $strSelected .'>- Ikke bruk bilde -</option>';
-						?>
-						</select>
-
-						<p class="help-block">A cover image for this campaign.</p>
-					</div>
-				</div>
 
 		</div>
 
