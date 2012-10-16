@@ -1,7 +1,7 @@
 <?php
 	/* Set up template variables */
-	$pagetitle = 'Admin/Users';
-	ob_start();
+	$PAGE_name  = 'Users';
+	$PAGE_title = 'Admin/' . $PAGE_name;
 ?>
 <?php require('_header.php'); ?>
 

@@ -1,14 +1,13 @@
 <?php
 	/* Set up template variables */
-	$PAGE_name  = 'Example';
+	$PAGE_name  = 'Example 1';
 	$PAGE_title = 'Admin/' . $PAGE_name;
+	$PAGE_form = array();
 ?>
 
 <?php
 
 	// See README.md in root for more information about how to set up and use the form-generator!
-
-	$PAGE_form = array();
 
 	$this_id = -1;
 	if (isset($_GET['id']))

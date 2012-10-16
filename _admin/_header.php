@@ -9,6 +9,13 @@
 		$SYS_folder = '';
 	}
 
+	// Dynamic links etc based on where we have the code-files
+	if ($_SERVER['SERVER_NAME'] == 'localhost') {
+		$SYS_url = "localhost";
+	} else {
+		$SYS_url = $_SERVER['SERVER_NAME'];
+	}
+
 	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_folder;
 
 	//$SYS_file = basename($_SERVER['REQUEST_URI'], ".php");
@@ -16,6 +23,18 @@
 	$parts = explode('/', $currentFile);
 	$currentFile = $parts[count($parts) - 1];
 	$SYS_script = str_replace('.php','',$currentFile);
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
+
+	$mappar = __FILE__;
+	if ( strpos($mappar,'\\') > 0 ) {
+		$mapparArr = explode('\\', $mappar); // localhost
+	} else {
+		$mapparArr = explode('/', $mappar); // dedicated server
+	}
+	$mapp = $mapparArr[count($mapparArr) - 3];
+
 ?>
 
 <?php require( $SYS_incroot . '/inc/database.php'); ?>
@@ -36,51 +55,27 @@
 	if (DEV_ENV) {
 		error_reporting(E_ALL);
 		ini_set('display_errors', '1');
-	}
-
-	header('Content-type: text/html; charset=utf-8');
-	header('X-UA-Compatible: IE=edge,chrome=1');
-	
-	if (!DEV_ENV)
+	} else {
 		ini_set('session.gc_maxlifetime', '10800');
+	}
 
 	session_cache_expire('30'); // default 180 minutes
 	date_default_timezone_set('Europe/Oslo');
 	setlocale(LC_TIME, 'no_NO.ISO_8859-1', 'norwegian', 'nb_NO.utf8', 'no_NO.utf8');
 
+	header('Content-type: text/html; charset=utf-8');
+	header('X-UA-Compatible: IE=edge,chrome=1');
+
+	//////////////////////////////////////////////////////////////////////////////////
+
 	ob_start();
 	session_start();
 	//ob_clean();
-
-	//////////////////////////////////////////////////////////////////////////////////
-			// TODO: Session med error-array tøms inte per sidladdning!?
-	// TODO: Wysiwyg-fæltet (sist i arrayen) sparas øver med Alternative-fæltet (2/3 i arrayen) vid postning
-			// TODO: Rensa kod och kommentarer kanske?!
-	// TODO: Behøvs en egen eller universiell global.inc hær? Eller egen functions.inc? Nåt ska iaf køra all kod som ligger hær i headern lite malplacert egentligen.
-	// TODO: Wysiwyg-javascript (tinyMCE) should only be generated IF an wysiwyg-editor is used/set up.
-	// TODO: Use an admin-folder variable so that there won't be such hassle to rename the admin-foler
-	// TODO: Autodetect all the folders used in a project damnit ... >_<
-	//////////////////////////////////////////////////////////////////////////////////
 
 	$_SESSION['ERRORS'] = array(); // Reset the error-session on each page load =)
 	$_SESSION['debug'] = array();
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
-	$mappar = __FILE__;
-	if ( strpos($mappar,'\\') > 0 ) {
-		$mapparArr = explode('\\', $mappar); // localhost
-	} else {
-		$mapparArr = explode('/', $mappar); // dedicated server
-	}
-	$mapp = $mapparArr[count($mapparArr) - 3];
-	
-	// Dynamic links etc based on where we have the code-files
-	if ($_SERVER['SERVER_NAME'] == 'localhost') {
-		$SYS_url = "localhost";
-	} else {
-		$SYS_url = $_SERVER['SERVER_NAME'];
-	}
 
 	// Push important debugging data to the footer:
 	pushDebug("
@@ -386,7 +381,7 @@
 
 	// Start the validation loop
 	// ERROR: Troligen skrivs sista datan øver hær inne, før den ær korrekt innan generateField men verkar inte ændras i den funktionen.
-	if (ISPOST) {
+	if (ISPOST && isset($PAGE_form)) {
 /*
 		// ERROR: Denna visar KORREKT data, så det ær inne i næsta loop, garanterat pga byreference och content-sættningen =/
 		foreach ($PAGE_form as &$field) {
@@ -464,7 +459,7 @@
 				}
 			}
 			if (isset($errors["mail"]) && mb_strlen($content) > 0) {
-				if ( !preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $content) ) {
+				if ( !isValidEmail($content) ) {
 					pushError("<strong>" . $field["label"] . "</strong> " . $errors["mail"]);
 				}
 			}
@@ -495,7 +490,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf8" />
-	<title><?= $PAGE_title ?> - x</title>
+	<title><?= $PAGE_title ?> - [SITENAME]</title>
 	<link rel="shortcut icon" href="<?= $SYS_folder ?>/favicon.ico">
 	<link rel="stylesheet" href="<?= $SYS_folder ?>/_admin/assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="<?= $SYS_folder ?>/_admin/assets/admin.css?v=<?php if (DEV_ENV) echo rand(); ?>" />
@@ -504,12 +499,40 @@
 <body>
 
 	<?php
+
+		//////////////////////////////////////////////////////////////////////////////////
+		// NAVIGATION MENU
+
+		// Return true if we are on a page connected to said menu, or a subpage.
+		// Only works when the naming convention "parent.php" + "parent-child.php" is used.
 		function isActiveOn($pages) {
 			global $SYS_script;
 			$arrPages = explode(",",$pages);
+
 			if (in_array($SYS_script,$arrPages))
+				return true;
+			else {
+ 				
+ 				if (strpos($SYS_script,"-") > 0)
+ 				{
+ 					$arrThisPart = explode("-",$SYS_script);
+
+ 					if ( in_array($arrThisPart[0],$arrPages) OR in_array($arrThisPart[1],$arrPages) )
+	 					return true;
+
+ 				}
+
+			}
+
+		}
+
+		// If above function says true we will print the active-class on that li.
+		function flagAsActiveOn($pages) {
+			if ( isActiveOn($pages) )
 				echo ' class="active"';
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////
 	?>
 
 	<div class="navbar navbar-fixed-top">
@@ -526,11 +549,11 @@
 				<div class="nav-collapse">
 
 					<ul class="nav">
-						<li<?php isActiveOn("login,index") ?>><a href="<?= $SYS_folder ?>/_admin/index.php">Start</a></li>
+						<li<?php flagAsActiveOn("index") ?>><a href="<?= $SYS_folder ?>/_admin/index.php">Start</a></li>
 						<?php if ($SYS_adminlvl > 0) { ?>
-							<li<?php isActiveOn("examples,example1") ?>><a href="<?= $SYS_folder ?>/_admin/example1.php">Examples</a></li>
+							<li<?php flagAsActiveOn("examples") ?>><a href="<?= $SYS_folder ?>/_admin/examples.php">Examples</a></li>
 							<?php if ($SYS_adminlvl == 2) { ?>
-							<li<?php isActiveOn("users") ?>><a href="<?= $SYS_folder ?>/_admin/users.php">Users</a></li>
+							<li<?php flagAsActiveOn("users") ?>><a href="<?= $SYS_folder ?>/_admin/users.php">Users</a></li>
 							<?php } ?>
 						<?php } ?>
 					</ul>
@@ -542,24 +565,25 @@
 	
 	<div class="subnav subnav-fixed">
 		<ul class="nav nav-pills">
-			<?php if (in_array($SYS_script,array("login","index") )) { ?>
+			<?php if (isActiveOn("index")) { ?>
 
-				<li<?php isActiveOn("login,index") ?>><a href="<?= $SYS_folder ?>/_admin/login.php">Login</a></li>
+				<li<?php flagAsActiveOn("index") ?>><a href="<?= $SYS_folder ?>/_admin/index.php">Login</a></li>
 				<?php if ($SYS_adminlvl > 0) { ?>
-				<li><a href="<?= $SYS_folder ?>/_admin/login.php?do=logout">Sign out</a></li>
+				<li><a href="<?= $SYS_folder ?>/_admin/index.php?do=logout">Sign out</a></li>
 				<?php } ?>
 
 
-			<?php } else if (in_array($SYS_script,array("users") )) { ?>
+			<?php } else if (isActiveOn("users")) { ?>
 
-				<li<?php isActiveOn("users") ?>><a href="<?= $SYS_folder ?>/_admin/users.php">Users</a></li>
+				<li<?php flagAsActiveOn("users") ?>><a href="<?= $SYS_folder ?>/_admin/users.php">Users</a></li>
 
 
-			<?php } else if (in_array($SYS_script, array("examples","example1") )) { ?>
+			<?php } else if (isActiveOn("examples")) { ?>
 
 				<?php if ($SYS_adminlvl > 0) { ?>
-					<li<?php isActiveOn("example1") ?>><a href="<?= $SYS_folder ?>/_admin/example1.php">Example1</a></li>
-					<li<?php isActiveOn("image") ?>><a href="<?= $SYS_folder ?>/_admin/image.php">Image</a></li>
+					<li<?php flagAsActiveOn("example1") ?>><a href="<?= $SYS_folder ?>/_admin/examples-example1.php">Example1</a></li>
+					<li<?php flagAsActiveOn("image") ?>><a href="<?= $SYS_folder ?>/_admin/examples-image.php">Image</a></li>
+					<li<?php flagAsActiveOn("upload") ?>><a href="<?= $SYS_folder ?>/_admin/examples-upload.php">Upload</a></li>
 				<?php } ?>
 
 			<?php } ?>
@@ -567,3 +591,4 @@
 	</div>
 
 	<div id="container">
+<!-- /header -->

@@ -1,7 +1,7 @@
 <?php
 	/* Set up template variables */
-	$pagetitle = 'Admin/Login';
-	ob_start();
+	$PAGE_name = 'Login';
+	$PAGE_title = 'Admin/' . $PAGE_name;
 ?>
 <?php require('_header.php'); ?>
 
@@ -68,7 +68,7 @@
 
 	<div class="page-header">
 		<h1>
-			nxt admin
+			"Bobby CMS"
 			<small>Sign in to your account</small>
 		</h1>
 	</div>
