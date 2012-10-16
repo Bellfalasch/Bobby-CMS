@@ -2,7 +2,9 @@
 	/* Set up template variables */
 	$PAGE_name  = 'Example 1';
 	$PAGE_title = 'Admin/' . $PAGE_name;
-	$PAGE_form = array();
+	
+	$PAGE_form = array(); // This declaration is needed on every page that will be using the form-rendering system.
+						  // Also make sure the rest of the code comes first - before the _header.php.
 ?>
 
 <?php
