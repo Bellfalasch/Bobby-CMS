@@ -137,11 +137,11 @@
 		return $newRand; //spit it out 
 	}
 
-	// Not the worlds best validator, but it'll work for now.
-	// http://www.linuxjournal.com/article/9585
+	// Native PHP 5 validation of e-mail. If on older system use the commented out line.
 	function isValidEmail($email)
 	{
-		if(preg_match("/[.+a-zA-Z0-9_-]+@[a-zA-Z0-9-]+.[a-zA-Z]+/", $email) > 0)
+		//if(preg_match("/[.+a-zA-Z0-9_-]+@[a-zA-Z0-9-]+.[a-zA-Z]+/", $email) > 0)
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
 			return true;
 		else
 			return false;
