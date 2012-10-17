@@ -253,17 +253,17 @@ Our variables:
 ----------------
 Names not preceding by the `$` are declared as such (constants). These are all set up in `_global.php` so they should be used without problem in any of your own template files. All these are set up automatically, except `$PAGE_name` and `$PAGE_title` that are set by yourself on top of each template file.
 
-`ISPOST`  - Detects if the page is being posted or not.
-`DEV_ENV` - Show the debugger-menu in the footer, if true (default).
+* `ISPOST`  - Detects if the page is being posted or not.
+* `DEV_ENV` - Show the debugger-menu in the footer, if true (default).
 
-`$SYS_domain`   - Get the domainname, like "localhost" or "nxt.no".
-`$SYS_root`     - The root folder which the main project (not the admin) resides in.
-`$SYS_folder`   - The folder which the admin itself is placed in (you can thus rename it to whatever, whenever!).
-`$SYS_script`   - The name of current php-file without the file ending.
-`$SYS_incroot`  - Just used to get the correct includes from the main project (used twice).
-`$SYS_adminlvl` - Get current admins level, defaults to 0.
+* `$SYS_domain`   - Get the domainname, like "localhost" or "nxt.no".
+* `$SYS_root`     - The root folder which the main project (not the admin) resides in.
+* `$SYS_folder`   - The folder which the admin itself is placed in (you can thus rename it to whatever, whenever!).
+* `$SYS_script`   - The name of current php-file without the file ending.
+* `$SYS_incroot`  - Just used to get the correct includes from the main project (used twice).
+* `$SYS_adminlvl` - Get current admins level, defaults to 0.
 
-`$PAGE_form`  - Our main array for smart form-handling, see previous point.
-`$PAGE_name`  - A name for the page/function, used here and there.
-`$PAGE_title` - The title to be used in the html title tag for this page.
-`$PAGE_dbid`  - If the QueryString "id" is present, this variable will store it. If not, it will store "-1". It's used for easier handling of fetching selected data from the database, and later saving it back on post.
+* `$PAGE_form`  - Our main array for smart form-handling, see previous point.
+* `$PAGE_name`  - A name for the page/function, used here and there.
+* `$PAGE_title` - The title to be used in the html title tag for this page.
+* `$PAGE_dbid`  - If the QueryString "id" is present, this variable will store it. If not, it will store "-1". It's used for easier handling of fetching selected data from the database, and later saving it back on post.
