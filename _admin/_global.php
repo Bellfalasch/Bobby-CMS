@@ -1,27 +1,4 @@
 <?
-	// Dynamic links etc based on where we have the code-files
-	// Needs to be set here so that require-url matcher.
-	if ($_SERVER['SERVER_NAME'] == 'localhost') {
-		$SYS_folder = '/nxtcms';
-	} else {
-		$SYS_folder = '';
-	}
-
-	// Dynamic links etc based on where we have the code-files
-	if ($_SERVER['SERVER_NAME'] == 'localhost') {
-		$SYS_url = "localhost";
-	} else {
-		$SYS_url = $_SERVER['SERVER_NAME'];
-	}
-
-	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_folder;
-
-	//$SYS_file = basename($_SERVER['REQUEST_URI'], ".php");
-	$currentFile = $_SERVER["SCRIPT_NAME"];
-	$parts = explode('/', $currentFile);
-	$currentFile = $parts[count($parts) - 1];
-	$SYS_script = str_replace('.php','',$currentFile);
-
 	//////////////////////////////////////////////////////////////////////////////////
 	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
 
@@ -31,9 +8,26 @@
 	} else {
 		$mapparArr = explode('/', $mappar); // dedicated server
 	}
-	$mapp = $mapparArr[count($mapparArr) - 3]; // SYS_folder
-	$mapp2 = $mapparArr[count($mapparArr) - 2]; // SYS_adminfolder?
+	$mapp = $mapparArr[count($mapparArr) - 3];
+	$mapp2 = $mapparArr[count($mapparArr) - 2];
 
+	
+	// Dynamic links etc based on where we have the code-files
+	$SYS_domain = $_SERVER['SERVER_NAME']
+	
+	if ($mapp != '')
+		$SYS_root = '/' . $mapp;
+
+	if ($mapp2 != '')
+		$SYS_folder = '/' . $mapp2;
+
+	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_folder;
+
+	// Fetch name of currently viewed file without the .php
+	$currentFile = $_SERVER["SCRIPT_NAME"];
+	$parts = explode('/', $currentFile);
+	$currentFile = $parts[count($parts) - 1];
+	$SYS_script = str_replace('.php','',$currentFile);
 
 require( $SYS_incroot . '/inc/functions.php');
 require( $SYS_incroot . '/inc/database.php');
@@ -87,9 +81,9 @@ require('_database.php');
 	$PAGE_form = array();
 
 	// Auto set up the current id of data so we can edit existing data
-	$this_id = -1;
-	if (isset($_GET['id']))
-		$this_id = $_GET['id'];
+	$PAGE_dbid = qsGet("id");
+	if ($PAGE_dbid == '')
+		$PAGE_dbid = -1;
 
 	// Easier add fields to your form.
 	function addField($field) {

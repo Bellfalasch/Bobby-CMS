@@ -154,7 +154,7 @@
 				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
 
 				// UPDATE
-				if ( $this_id > 0 )
+				if ( $PAGE_dbid > 0 )
 				{
 					// CALL YOUR DATABASE AND UPDATE WITH THIS NEW DATA ... (TODO)
 /*
@@ -170,7 +170,7 @@
 								'give_step1' => $formGiveStep1,
 								'give_takk' => $formGiveTakk,
 								'image' => $formImage,
-								'id' => $this_id
+								'id' => $PAGE_dbid
 							) );
 
 					if ($result >= 0) {
@@ -203,7 +203,7 @@
 						echo "<div class='alert alert-success'><h4>Save successful</h4><p>New $PAGE_name saved, id: $result</p></div>";
 
 						// After save we have to reset all variabels so that we get a new clean form
-						$this_id = -1;
+						$PAGE_dbid = -1;
 
 						foreach ($PAGE_form as $field) {
 							$field["content"] = '';
@@ -224,12 +224,12 @@
 
 
 		// TODO: If we have a given id, fetch form data from database.
-		if ( $this_id > 0 )
+		if ( $PAGE_dbid > 0 )
 		{
 			// Pseudo: Run SQL, get result, loop through it and put each data in the correct "content" of all the arrays.
 			// 		   Maybe time for that setting in the arrays with name of field in database? Hmm ... TODO =)
 			/*
-			$result = db2_getCampaign( array('id' => $this_id) );
+			$result = db2_getCampaign( array('id' => $PAGE_dbid) );
 
 			if (!is_null($result))
 			{
@@ -353,8 +353,8 @@
 	<div class="form-actions">
 		<button type="submit" class="btn btn-primary">Save</button>
 
-		<?php if ($this_id > 0 && 1 == 2) { ?>
-		<a href="?del=<?= $this_id ?>" class="btn btn-mini btn-danger">Delete</a>
+		<?php if ($PAGE_dbid > 0 && 1 == 2) { ?>
+		<a href="?del=<?= $PAGE_dbid ?>" class="btn btn-mini btn-danger">Delete</a>
 		<?php } ?>
 	</div>
 

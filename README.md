@@ -18,6 +18,9 @@ Just drop the folder `_admin` in your project and extract these files in it. Of 
 Updates:
 ----------------
 
+### 0.9.1
+Introducing the file `_global.php` full of functions and setup up things needed. Things now work a bit different with PAGE_form in that we explicitly call the function `validateForm()` to validate the form. Do this in the ISPOST-check before extracting and working with the posted data heading for your database.
+
 ### 0.9
 A major clean-up of files and their code. The most prominent new things are the admin functions for file upload and image upload (as usual as files and not functions), new easier menu-handling, and support for form-posting without the whole PAGE_form. So you can set up your own forms, just drop the code, and get it to work by the side of the smarter PAGE_form to get up and running faster. The menu-update is explained in more detail futher down.
 

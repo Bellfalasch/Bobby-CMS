@@ -124,7 +124,7 @@
 				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
 
 				// UPDATE
-				if ( $this_id > 0 )
+				if ( $PAGE_dbid > 0 )
 				{
 					// Call function in "_database.php" that does the db-handling, send in an array with data
 					$result = db2_setUpdateUser( array(
@@ -133,7 +133,7 @@
 								'username' => $formUsername,
 								'password' => $formPassword,
 								'level' => $formLevel,
-								'id' => $this_id
+								'id' => $PAGE_dbid
 							) );
 
 					// This is the result from the db-handling in my files.
@@ -162,7 +162,7 @@
 						echo '<div class="alert alert-success"><h4>Save successful</h4><p>New data saved, id: ' . $result . '</p></div>';
 
 						// Reset all the data so we get a clean form after an insert.
-						$this_id = -1;
+						$PAGE_dbid = -1;
 
 						// Stupid way of reseting the PAGE_form
 						$PAGE_form[0]["content"] = '';
@@ -186,14 +186,14 @@
 		////////////////////////////////////////////////////////
 		// HANDLE FILLING THE FORM WITH DATA FROM THE DATABASE
 
-		if ( $this_id > 0 && !ISPOST )
+		if ( $PAGE_dbid > 0 && !ISPOST )
 		{
 			// Pseudo: Run SQL, get result, loop through it and put each data in the correct "content" of all the arrays.
 			// 		   Maybe time for that setting in the arrays with name of field in database? Hmm ... TODO =)
 			
 			
 			// Call _database.php function for getting any selected data.
-			$result = db2_getUser( array('id' => $this_id) );
+			$result = db2_getUser( array('id' => $PAGE_dbid) );
 
 			// If anything was found, put it into pur PAGE_form
 			if (!is_null($result))
@@ -304,8 +304,8 @@
 		<div class="form-actions">
 			<button type="submit" class="btn btn-primary">Save</button>
 
-			<?php if ($this_id > 0) { ?>
-			<a href="?del=<?= $this_id ?>" class="btn btn-mini btn-danger">Delete this</a>
+			<?php if ($PAGE_dbid > 0) { ?>
+			<a href="?del=<?= $PAGE_dbid ?>" class="btn btn-mini btn-danger">Delete this</a>
 			<?php } ?>
 		</div>
 
