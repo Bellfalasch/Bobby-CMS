@@ -27,46 +27,7 @@
 			generateField($fields);
 		}
 	}
-/*
-	addField( array(
-		"label" => "Title:",
-		"id" => "Title",
-		"type" => "text(3)",
-		"description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
-		"min" => "2",
-		"max" => "45",
-		"null" => false,
-		"errors" => array(
-						"min" => "Please keep number of character's on at least [MIN].",
-						"max" => "Please keep number of character's to [MAX] at most."
-					)
-	) );
 
-	addField( array(
-		"label" => "Wysiwyg:",
-		"id" => "Wysiwyg",
-		"type" => "wysiwyg(5*5)",
-		"description" => "Write a novell!",
-		"min" => "1",
-		"max" => "10240",
-		"null" => true,
-		"errors" => array(
-						"min" => "Please write at least something here ='(",
-						"max" => "Please keep number of character's to [MAX] at most."
-					)
-	) );
-
-	addField( array(
-		"label" => "Zip:",
-		"type" => "text(2)",
-		"min" => "4",
-		"errors" => array(
-						"min" => "We need your zip to be able to send free things to you!",
-						"exact" => "Not valid format - Please submit exactly four characters in this field.",
-						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
-					)
-	) );
-*/
 	addField( array(
 		"label" => "Name:",
 		"type" => "text(4)",
@@ -110,7 +71,7 @@
 						"max" => "Please keep number of character's to [MAX] at most."
 					)
 	) );
-
+/*
 	addField( array(
 		"label" => "Level:",
 		"type" => "text(1)",
@@ -122,7 +83,7 @@
 						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
 					)
 	) );
-
+*/
 ?>
 <?php require('_header.php'); ?>
 
@@ -142,32 +103,40 @@
 					) );
 
 			if ($del >= 0)
-				echo "<div class='alert alert-success'><h4>Delete successful</h4><p>The $PAGE_name is now deleted</p></div>";
+				echo "<div class='alert alert-success'><h4>Delete successful</h4><p>The data is now deleted</p></div>";
 			else
-				pushError("Delete of $PAGE_name failed, please try again.");
+				pushError("Delete of data failed, please try again.");
 		}
 		
 
 		////////////////////////////////////////////////////////
 		// HANDLE POST AND SAVE CHANGES
 
+		// EDITION: Custom field (variable needs to be set up before ISPOST, and because of formGet we can make that work easier)
+		$formLevel    = formGet("level");
+
 		// User has posted (trying to save changes)
 		if (ISPOST)
 		{
 			
-			var_dump($PAGE_form);
+			var_dump($PAGE_form); // For debugging
+
+			// Stupid way of getting all the form data into variables for use to save the data.
+			$formName     = $PAGE_form[0]["content"];
+			$formMail     = $PAGE_form[1]["content"];
+			$formUsername = $PAGE_form[2]["content"];
+			$formPassword = $PAGE_form[3]["content"];
+			
+			// EDITION: Custom validation on custom field:
+			if (! in_array($formLevel,array('0','1','2','3')) ) {
+				// User pushError, but insert custom html:
+				pushError('<strong>Admin level</strong>: Choose between the different access levels presented.');
+			}
 
 			// If no errors:
 			if (empty($_SESSION['ERRORS'])) {
 				
 				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
-
-				// Stupid way of getting all the form data into variables for use to save the data.
-				$formName     = $PAGE_form[0]["content"];
-				$formMail     = $PAGE_form[1]["content"];
-				$formUsername = $PAGE_form[2]["content"];
-				$formPassword = $PAGE_form[3]["content"];
-				$formLevel    = $PAGE_form[4]["content"];
 
 				// UPDATE
 				if ( $this_id > 0 )
@@ -212,7 +181,9 @@
 						$PAGE_form[1]["content"] = '';
 						$PAGE_form[2]["content"] = '';
 						$PAGE_form[3]["content"] = '';
-						$PAGE_form[4]["content"] = '';
+						
+						// EDITION: Reset custom field
+						$formLevel = '';
 
 					} else {
 						pushError("Data could not be saved, do retry.");
@@ -246,7 +217,9 @@
 				$PAGE_form[1]["content"] = $row->mail;
 				$PAGE_form[2]["content"] = $row->username;
 				$PAGE_form[3]["content"] = $row->password;
-				$PAGE_form[4]["content"] = $row->level;
+				
+				// EDITION: Setting data from database to custom field
+				$formLevel = $row->level;
 
 			} else {
 				pushError("Couldn't find the requested data");
@@ -285,6 +258,31 @@
 		outputFormFields();
 
 	?>
+
+				<!-- EDITION: Adding a fully custom field to the form -->
+				<div class="control-group">
+					<label class="control-label">Admin level</label>
+					<div class="controls">
+						<label class="radio">
+							<input type="radio" name="level" id="inputLevel0" value="0"<?php if ($formLevel == 0) echo 'checked="checked"' ?> />
+							No access (user can no longer sign in)
+						</label>
+						<label class="radio">
+							<input type="radio" name="level" id="inputLevel1" value="1"<?php if ($formLevel == 1) echo 'checked="checked"' ?> />
+							Basic access
+						</label>
+						<label class="radio">
+							<input type="radio" name="level" id="inputLevel2" value="2"<?php if ($formLevel == 2) echo 'checked="checked"' ?> />
+							Full access
+						</label>
+						<label class="radio">
+							<input type="radio" name="level" id="inputLevel3" value="3"<?php if ($formLevel == 3) echo 'checked="checked"' ?> />
+							Super admin
+						</label>
+						<p class="help-block">Assign a access level to the user, you need to sign out and then in again to activate new access level on yourself</p>
+					</div>
+				</div>
+
 
 			</div>
 
