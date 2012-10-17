@@ -143,7 +143,7 @@
 				// UPDATE
 				if ( $this_id > 0 )
 				{
-					// CALL YOUR DATABASE AND UPDATE WITH THIS NEW DATA ... (TODO)
+					// Call function in "_database.php" that does the db-handling, send in an array with data
 					$result = db2_setUpdateUser( array(
 								'name' => $formName,
 								'mail' => $formMail,
@@ -153,8 +153,9 @@
 								'id' => $this_id
 							) );
 
+					// This is the result from the db-handling in my files.
+					// (On update they return -1 on error, and 0 on "no new text added, but the SQL worked", and > 0 for the updated posts id.)
 					if ($result >= 0) {
-
 						echo '<div class="alert alert-success"><h4>Save successful</h4><p>Data updated</p></div>';
 					} else {
 						pushError("Data could not be saved, do retry.");
@@ -163,6 +164,7 @@
 				// INSERT
 				} else {
 
+					// Call insert-function from our database-file for admin.
 					$result = db2_setUser( array(
 								'name' => $formName,
 								'mail' => $formMail,
@@ -171,6 +173,7 @@
 								'level' => $formLevel
 							) );
 
+					// If the insert worked we will now have the created id in this variable, otherwhise we will have 0 or -1.
 					if ($result > 0) {
 						
 						echo '<div class="alert alert-success"><h4>Save successful</h4><p>New data saved, id: ' . $result . '</p></div>';
