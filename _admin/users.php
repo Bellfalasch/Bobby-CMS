@@ -72,6 +72,8 @@
 					)
 	) );
 /*
+	// EDITION: Instead of adding a field with addField to the PAGE_form, we can do it manually. Just follow the "EDITION"-steps in this file!
+
 	addField( array(
 		"label" => "Level:",
 		"type" => "text(1)",
