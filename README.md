@@ -6,23 +6,20 @@ A Superlight Admin
 
 Bobby CMS is a development name, since more fitting names such as Skeleton CMS, Barebone CMS, Skinny CMS, where all taken. This CMS is intended only for PHP-developers so that they fast and easy can set up an admin on top of their MySQL-database.
 
-This is meant to be used on top of my other PHP-templates. It's super easy and small. You just set up your own SQL's for the admin in
-_database.php and then you're good to go. The footer and header's are used on each file. The header detects which file you're surfing
-and updates the menu according to that.
+This is meant to be used on top of my other PHP-templates. It's super easy and small. You just set up your own SQL's for the admin in _database.php and then you're good to go. The footer and header's are used on each file. The header detects which file you're browsing and updates the menu according to that.
 
-Each php-file is it's own admin function. Basically they display an empty form to the left with information, and to the right a list of
-every data that already are in the database. Click a link there to load this data in the form and perform a database update, or just fill
-in an empty form to perform a database insert. This is built to be easy up and go but with the ability for everything to be easily
-tailormade, hence no automation of things.
+Each php-file is it's own admin function. Basically they each display an empty form to the left with information, and to the right a list of every data that already are in the database. Click a link there to load this data in the form and perform a database update, or just fill in an empty form to perform a database insert. This is built to be easy up and go but with the ability for everything to be easily tailormade, hence sparingly with automation of things.
 
 Check the included examples for best practice of how to set your admin files up.
 
-Just drop the folder `_admin` in your project and extract these files in it. Of course you can edit the folder name after your hearts
-content, but at the moment you have to manually update all the files to the new path.
+Just drop the folder `_admin` in your project and extract these files in it. Of course you can edit the folder name after your hearts content, but at the moment you have to manually update all the files to the new path.
 
 
 Updates:
 ----------------
+
+### 0.9
+A major clean-up of files and their code. The most prominent new things are the admin functions for file upload and image upload (as usual as files and not functions), new easier menu-handling, and support for form-posting without the whole PAGE_form. So you can set up your own forms, just drop the code, and get it to work by the side of the smarter PAGE_form to get up and running faster. The menu-update is explained in more detail futher down.
 
 ### 0.8.6
 Easier add fields to your form with a smoother syntax of setting them all up. The output of the fields are also now just a single function-call. And a bit of other clean ups in the code and the comments.
@@ -31,13 +28,10 @@ Easier add fields to your form with a smoother syntax of setting them all up. Th
 Field Type "folder" (also supports setting size) introduced! Uses the all new settings-variable which in a CSS-like manner easily configures more advanced fields. Supports settings for which folder to list (in the select/options-box), select file types (if set, exclude every file format not listed), and set text for "select no file" if that is to be used (added in the end of the folderlist. The folder-type automatically hides subfolders.
 
 ### 0.8
-This update makes for an complete overhaul of how forms are set up and validated. You now define your settings in an associative array for each
-form field you wanna have on each page (se example1.php). This will then generate the COMPLETE form, AND it's validation. Nothing short of epic!
-The UPDATE/INSERT to the database is still handled manually ... automation for this set to come for 1.0.
+This update makes for an complete overhaul of how forms are set up and validated. You now define your settings in an associative array for each form field you wanna have on each page (se example1.php). This will then generate the COMPLETE form, AND it's validation. Nothing short of epic! The UPDATE/INSERT to the database is still handled manually ... automation for this set to come for 1.0.
 
 ### 0.5
-Changed the file-structure a bit and included default files needed to run this admin - `../inc/*` - and took the admin to it's own repository on
-GitHub. The admin can now be "installed" and runned without any of my other templates in place beforehand.
+Changed the file-structure a bit and included default files needed to run this admin - `../inc/*` - and took the admin to it's own repository on GitHub. The admin can now be "installed" and runned without any of my other templates in place beforehand.
 
 ### 0.3
 I have set it up on my GitHub for "Super-Simple-Web-Templates", extremly basic set up, just the files needed and kind of bad/error proune examples.
@@ -52,17 +46,18 @@ The future:
 * Automatic INSERT/UPDATE-generation for MySQL
 * More field types, like checkbox, radio, hidden, map, dropdown
 * A page_post setting for label append, submit button title, admin level, etc
-* Combine min-max to one field (something like length:2-255)
+* Combine min-max to one field (something like 'length:2-255')
 
 
 Dependencies:
 ----------------
 You must use this admin on a project based on one of my other simple PHP templates, at minimum these files:
-
-* **../inc/database.php** - Needed for accessing the database (password etc), and processing SQL's in the admin's own "_database.php".
-* **../inc/functions.php** - The admin uses some basic functions added in this file, used by my other "PHP-templates".
+**../inc/database.php** - Needed for accessing the database (password etc), and for processing all the SQL's in the admin's "_database.php".
+**../inc/functions.php** - The admin uses some basic functions added in this file, used by my other "PHP-templates".
 
 This admin is based on **Bootstrap** by Twitter (included) and **TinyMCE** (included).
+
+It should be fairly easy to strip away all of these dependencies, if you're bold enough =P
 
 
 Basic structure:
@@ -79,16 +74,26 @@ The power file =) This file contains the two functions that will 1. Generate you
 * assets/bootstrap.min.css - The projects uses Bootstrap 2.0, check their site for more info: http://twitter.github.com/bootstrap/scaffolding.html
 
 ### Files:
-* index.php - validates your login, and also handles log out
+* index.php - frontpage, validates your login, and also handles log out
 * users.php - create, delete, and edit users
 
 ### Examples:
-Example files just so you can see how I have set up different files in my live projects:
-* example1.php - THE ONLY EXAMPLE WITH THE NEW 0.8-STYLE OF SETTING UP FORMS!!!
-* campaign.php - OLD SETUP!!!
-* datespan.php - OLD SETUP!!!
-* discounts.php - OLD SETUP!!!
-* overview.php - OLD SETUP!!!
+Example files are added just so you can see how I have set up different files in my live projects. You can duplicate them, modify them, or just delete them. They are completly independable:
+* examples.php - The intro/start page for our examples.
+* examples-example1.php - This example use the 0.8-new style of setting up a form with validation.
+* examples-upload.php - Easily upload any file to the admin for later use in any form. No database connection!
+* examples-images.php - Easily upload an file and scale it to many different versions for use in any form. No database connection!
+
+
+Our menu system
+----------------
+Our menu system is far from done. You do need to edit the `_header.php` and adding the `li a` for each link. But I have at this moment at least eased the burden a bit with writing the `active`-class on the specific page you're actually visiting at the moment. It depends on two functions - at the moment placed just before the menu.
+
+**isActiveOn** - This checks if the current file is the same as the menu you're printing, or if it is the child of it (using the `parent.php` + `parent-child.php` naming convention). This function is the main function for the menu. The submenu use this to show the correct submenu depending on the selected item in the main menu.
+
+**flagAsActiveOn** - This just outputs the active-class if the previous function returns true.
+
+In the future I will try and make the generation of the menu even easier.
 
 
 Setting up your form fields:
