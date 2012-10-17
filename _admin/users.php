@@ -54,10 +54,8 @@
 				pushError('Du har ikke lagt inn tekst i "Password".');
 			}
 
-			if ($formLevel === '0' || $formLevel === '1' || $formLevel === '2') {
-				// Helt ok
-			} else {
-				pushError('Choose between the three different access levels.');
+			if (! in_array($formLevel,array('0','1','2','3')) ) {
+				pushError('Choose between the different access levels.');
 			}
 
 			if (empty($_SESSION['ERRORS'])) {
