@@ -18,6 +18,9 @@ Just drop the folder `_admin` in your project and extract these files in it. Of 
 Updates:
 ----------------
 
+### 0.9.2
+You should now be able to rename the "_admin"-folder AS WELL as the root-folder, and move the files between live and localhost without any code change! I use a couple of new variables - SYS_root and SYS_folder - for this, where SYS_folder is known from before. Added section to this guide about our variables.
+
 ### 0.9.1
 Introducing the file `_global.php` full of functions and setup up things needed. Things now work a bit different with PAGE_form in that we explicitly call the function `validateForm()` to validate the form. Do this in the ISPOST-check before extracting and working with the posted data heading for your database.
 
@@ -244,3 +247,23 @@ As you can see, you can set the size of the field as usual. The big new thing is
 And lastly we have the folder-setting, which needs to be set for the rendering to work. Always end this with /, and this will start in the "_admin"-folder.
 
 All settings are listed in CSS-style so that you have "setting:value;".
+
+
+Our variables:
+----------------
+Names not preceding by the `$` are declared as such (constants). These are all set up in `_global.php` so they should be used without problem in any of your own template files. All these are set up automatically, except `$PAGE_name` and `$PAGE_title` that are set by yourself on top of each template file.
+
+`ISPOST`  - Detects if the page is being posted or not.
+`DEV_ENV` - Show the debugger-menu in the footer, if true (default).
+
+`$SYS_domain`   - Get the domainname, like "localhost" or "nxt.no".
+`$SYS_root`     - The root folder which the main project (not the admin) resides in.
+`$SYS_folder`   - The folder which the admin itself is placed in (you can thus rename it to whatever, whenever!).
+`$SYS_script`   - The name of current php-file without the file ending.
+`$SYS_incroot`  - Just used to get the correct includes from the main project (used twice).
+`$SYS_adminlvl` - Get current admins level, defaults to 0.
+
+`$PAGE_form`  - Our main array for smart form-handling, see previous point.
+`$PAGE_name`  - A name for the page/function, used here and there.
+`$PAGE_title` - The title to be used in the html title tag for this page.
+`$PAGE_dbid`  - If the QueryString "id" is present, this variable will store it. If not, it will store "-1". It's used for easier handling of fetching selected data from the database, and later saving it back on post.
