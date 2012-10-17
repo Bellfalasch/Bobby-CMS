@@ -13,7 +13,7 @@
 			$formMail = formGet('cms_mail');
 			$formPass = formGet('cms_pass');
 
-			$result = db_getUserLoginInfo( array('username' => $formMail) );
+			$result = db2_getUserLoginInfo( array('username' => $formMail) );
 
 			if (!is_null($result))
 			{

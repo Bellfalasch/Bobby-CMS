@@ -380,10 +380,8 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Start the validation loop
-	// ERROR: Troligen skrivs sista datan øver hær inne, før den ær korrekt innan generateField men verkar inte ændras i den funktionen.
 	if (ISPOST && isset($PAGE_form)) {
 /*
-		// ERROR: Denna visar KORREKT data, så det ær inne i næsta loop, garanterat pga byreference och content-sættningen =/
 		foreach ($PAGE_form as &$field) {
 			var_dump($field);
 		}
@@ -477,7 +475,6 @@
 		}
 
 /*
-		// ERROR: Hær ær den OCKSÅ korrekt ... kanske blir fel i generateFields ændå =/
 		foreach ($PAGE_form as &$field) {
 			var_dump($field);
 		}

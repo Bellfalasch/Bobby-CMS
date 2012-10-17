@@ -212,52 +212,58 @@
 
 	////////////////// USERS //////////////////////
 
-	function db_getUserLoginInfo($in) { cleanup($in);
+	////////////////// USERS //////////////////////
+
+	function db2_getUserLoginInfo($in) { cleanup($in);
 		return db_MAIN("
-			SELECT `id`, `password`, `mail`, `level`
-			FROM `admins`
-			WHERE `mail` LIKE {$in['username']}
+			SELECT `id`, `name`, `username`, `password`, `mail`, `level`
+			FROM `nxtcms_users`
+			WHERE `username` LIKE {$in['username']}
 			LIMIT 1
 		;");
 	}
-	function db_getUsers() {
+	function db2_getUsers() {
 		return db_MAIN("
-			SELECT `id`, `password`, `mail`, `level`
-			FROM `admins`
+			SELECT `id`, `name`, `username`, `password`, `mail`, `level`
+			FROM `nxtcms_users`
 			ORDER BY `id` DESC
 		");
 	}
-	function db_getUser($in) { cleanup($in);
+	function db2_getUser($in) { cleanup($in);
 		return db_MAIN("
-			SELECT `id`, `password`, `mail`, `level`
-			FROM `admins`
+			SELECT `id`, `name`, `username`, `password`, `mail`, `level`
+			FROM `nxtcms_users`
 			WHERE id = {$in['id']}
 		");
 	}
-	function db_setUpdateUser($in) { cleanup($in);
+	function db2_setUpdateUser($in) { cleanup($in);
 		return db_MAIN("
-			UPDATE `admins`
+			UPDATE `nxtcms_users`
 			SET
+				`name` = {$in['name']},
+				`username` = {$in['username']},
 				`mail` = {$in['mail']},
 				`password` = {$in['password']},
 				`level` = {$in['level']}
 			WHERE `id` = {$in['id']}
 		");
 	}
-	function db_setUser($in) { cleanup($in);
+	function db2_setUser($in) { cleanup($in);
 		return db_MAIN("
-			INSERT INTO `admins`
-				(`mail`,`password`,`level`)
+			INSERT INTO `nxtcms_users`
+				(`name`,`username`,`mail`,`password`,`level`)
 			VALUES(
+				{$in['name']},
+				{$in['username']},
 				{$in['mail']},
 				{$in['password']},
 				{$in['level']}
 			)
 		");
 	}
-	function db_delUser($in) { cleanup($in);
+	function db2_delUser($in) { cleanup($in);
 		return db_MAIN("
-			DELETE FROM `admins`
+			DELETE FROM `nxtcms_users`
 			WHERE `id` = {$in['id']}
 		");
 	}

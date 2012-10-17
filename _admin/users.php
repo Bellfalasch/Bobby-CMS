@@ -2,219 +2,328 @@
 	/* Set up template variables */
 	$PAGE_name  = 'Users';
 	$PAGE_title = 'Admin/' . $PAGE_name;
+
+	$PAGE_form = array(); // Activate our smart form-builder
+?>
+
+<?php
+
+	// See README.md in root for more information about how to set up and use the form-generator!
+
+	$this_id = -1;
+	if (isset($_GET['id']))
+		$this_id = $_GET['id'];
+
+	// Easier add fields to your form.
+	function addField($field) {
+		global $PAGE_form;
+		array_push($PAGE_form, $field);
+	}
+
+	// More easily call output of html for your forms down the page.
+	function outputFormFields() {
+		global $PAGE_form;
+		foreach ($PAGE_form as $fields) {
+			generateField($fields);
+		}
+	}
+/*
+	addField( array(
+		"label" => "Title:",
+		"id" => "Title",
+		"type" => "text(3)",
+		"description" => "Write a good descriptive title for this post in between [MIN] and [MAX] characters.",
+		"min" => "2",
+		"max" => "45",
+		"null" => false,
+		"errors" => array(
+						"min" => "Please keep number of character's on at least [MIN].",
+						"max" => "Please keep number of character's to [MAX] at most."
+					)
+	) );
+
+	addField( array(
+		"label" => "Wysiwyg:",
+		"id" => "Wysiwyg",
+		"type" => "wysiwyg(5*5)",
+		"description" => "Write a novell!",
+		"min" => "1",
+		"max" => "10240",
+		"null" => true,
+		"errors" => array(
+						"min" => "Please write at least something here ='(",
+						"max" => "Please keep number of character's to [MAX] at most."
+					)
+	) );
+
+	addField( array(
+		"label" => "Zip:",
+		"type" => "text(2)",
+		"min" => "4",
+		"errors" => array(
+						"min" => "We need your zip to be able to send free things to you!",
+						"exact" => "Not valid format - Please submit exactly four characters in this field.",
+						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
+					)
+	) );
+*/
+	addField( array(
+		"label" => "Name:",
+		"type" => "text(4)",
+		"max" => "45",
+		"null" => true,
+		"errors" => array(
+						"max" => "Please keep number of character's to [MAX] at most."
+					)
+	) );
+	
+	addField( array(
+		"label" => "Email:",
+		"type" => "text(5)",
+		"min" => "1",
+		"max" => "255",
+		"errors" => array(
+						"min" => "Please submit your e-mail address.",
+						"max" => "Please keep number of character's to [MAX] at most.",
+						"mail" => "Please use a valid e-mail, [CONTENT] is not valid."
+					)
+	) );
+	
+	addField( array(
+		"label" => "Username:",
+		"type" => "text(3)",
+		"min" => "3",
+		"max" => "45",
+		"errors" => array(
+						"min" => "Please set a username.",
+						"max" => "Please keep number of characters to [MAX] at most."
+					)
+	) );
+	
+	addField( array(
+		"label" => "Password:",
+		"type" => "text(3)",
+		"min" => "5",
+		"max" => "45",
+		"errors" => array(
+						"min" => "Please set a password with at least [MIN] characters.",
+						"max" => "Please keep number of character's to [MAX] at most."
+					)
+	) );
+
+	addField( array(
+		"label" => "Level:",
+		"type" => "text(1)",
+		"min" => "1",
+		"max" => "1",
+		"errors" => array(
+						"min" => "We need the admin level!",
+						"exact" => "Not valid format - Please submit exactly one character in this field.",
+						"numeric" => "This field needs to contain only numbers (no letters, no special characters, no spaces, etc)!"
+					)
+	) );
+
 ?>
 <?php require('_header.php'); ?>
 
 
 	<?php
 
-		$user_id = -1;
-		$formMail = '';
-		$formPassword = '';
-		$formLevel = '';
+		////////////////////////////////////////////////////////
+		// DELETE DATA-SUPPORT
 
-		if (isset($_GET['id']))
-			$user_id = qsGet('id');
-
-		
+		// Deletion of content (comment out if not to be allowed)
 		if (isset($_GET['del']) && !ISPOST)
 		{
 			$del_id = trim( $_GET['del'] );
 
-			$del = db_delUser( array(
+			$del = db2_delDiscount( array(
 						'id' => $del_id
 					) );
 
 			if ($del >= 0)
-				echo '<div class="alert alert-success"><h4>Delete successful</h4><p>The User is now deleted</p></div>';
+				echo "<div class='alert alert-success'><h4>Delete successful</h4><p>The $PAGE_name is now deleted</p></div>";
 			else
-				pushError('Delete of User failed, please try again.');
+				pushError("Delete of $PAGE_name failed, please try again.");
 		}
 		
 
+		////////////////////////////////////////////////////////
+		// HANDLE POST AND SAVE CHANGES
+
+		// User has posted (trying to save changes)
 		if (ISPOST)
 		{
-			$formMail = strtolower(formGet('mail'));
-			$formPassword = formGet('password');
-			$formLevel = formGet('level');
+			
+			var_dump($PAGE_form);
 
-			if ($formMail != '') {
-				if (!isValidLength($formMail,5,100)) {
-					pushError('Teksten i "E-mail" er for lang. Legg inn tekst med maks 100 tegn.');
-				}
-			} else {
-				pushError('Du har ikke lagt inn tekst i "E-mail".');
-			}
-
-			if ($formPassword != '') {
-				if (!isValidLength($formPassword,3,45)) {
-					pushError('Teksten i "Password" er for lang, eller kort. Legg inn tekst med minimum 3 tegn og maks 45 tegn.');
-				}
-			} else {
-				pushError('Du har ikke lagt inn tekst i "Password".');
-			}
-
-			if (! in_array($formLevel,array('0','1','2','3')) ) {
-				pushError('Choose between the different access levels.');
-			}
-
+			// If no errors:
 			if (empty($_SESSION['ERRORS'])) {
+				
+				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
+
+				// Stupid way of getting all the form data into variables for use to save the data.
+				$formName     = $PAGE_form[0]["content"];
+				$formMail     = $PAGE_form[1]["content"];
+				$formUsername = $PAGE_form[2]["content"];
+				$formPassword = $PAGE_form[3]["content"];
+				$formLevel    = $PAGE_form[4]["content"];
+
 				// UPDATE
-				if ( $user_id > 0 )
+				if ( $this_id > 0 )
 				{
-					$result = db_setUpdateUser( array(
+					// CALL YOUR DATABASE AND UPDATE WITH THIS NEW DATA ... (TODO)
+					$result = db2_setUpdateUser( array(
+								'name' => $formName,
 								'mail' => $formMail,
+								'username' => $formUsername,
 								'password' => $formPassword,
 								'level' => $formLevel,
-								'id' => $user_id
+								'id' => $this_id
 							) );
 
 					if ($result >= 0) {
-						//echo "Sparat!";
-						echo '<div class="alert alert-success"><h4>Save successful</h4><p>User updated</p></div>';
+
+						echo '<div class="alert alert-success"><h4>Save successful</h4><p>Data updated</p></div>';
 					} else {
-						pushError("IKKE sparat");
+						pushError("Data could not be saved, do retry.");
 					}
 
-				// CREATE
+				// INSERT
 				} else {
 
-					$result = db_setUser( array(
+					$result = db2_setUser( array(
+								'name' => $formName,
 								'mail' => $formMail,
+								'username' => $formUsername,
 								'password' => $formPassword,
 								'level' => $formLevel
 							) );
 
 					if ($result > 0) {
-						//echo "Nytt med id $result";
-						echo '<div class="alert alert-success"><h4>Save successful</h4><p>New User saved, id: ' . $result . '</p></div>';
+						
+						echo '<div class="alert alert-success"><h4>Save successful</h4><p>New data saved, id: ' . $result . '</p></div>';
 
-						$user_id = -1;
-						$formMail = '';
-						$formPassword = '';
-						$formLevel = '';
+						// Reset all the data so we get a clean form after an insert.
+						$this_id = -1;
+
+						// Stupid way of reseting the PAGE_form
+						$PAGE_form[0]["content"] = '';
+						$PAGE_form[1]["content"] = '';
+						$PAGE_form[2]["content"] = '';
+						$PAGE_form[3]["content"] = '';
+						$PAGE_form[4]["content"] = '';
 
 					} else {
-						pushError("IKKE sparat");
+						pushError("Data could not be saved, do retry.");
 					}
+
 				}
 			}
 
-		} else {
+		}
 
-			if ( $user_id > 0 )
+
+		////////////////////////////////////////////////////////
+		// HANDLE FILLING THE FORM WITH DATA FROM THE DATABASE
+
+		if ( $this_id > 0 && !ISPOST )
+		{
+			// Pseudo: Run SQL, get result, loop through it and put each data in the correct "content" of all the arrays.
+			// 		   Maybe time for that setting in the arrays with name of field in database? Hmm ... TODO =)
+			
+			
+			// Call _database.php function for getting any selected data.
+			$result = db2_getUser( array('id' => $this_id) );
+
+			// If anything was found, put it into pur PAGE_form
+			if (!is_null($result))
 			{
-				$result = db_getUser( array('id' => $user_id) );
+				$row = $result->fetch_object();
 
-				if (!is_null($result))
-				{
-					$row = $result->fetch_object();
-					$formMail = $row->mail;
-					$formPassword = $row->password;
-					$formLevel = $row->level;
-				} else {
-					pushError("Couldn't find the requested User");
-				}
+				// Stupid way of doing it ... no function yet to bind database table to the form, sorry =P
+				$PAGE_form[0]["content"] = $row->name;
+				$PAGE_form[1]["content"] = $row->mail;
+				$PAGE_form[2]["content"] = $row->username;
+				$PAGE_form[3]["content"] = $row->password;
+				$PAGE_form[4]["content"] = $row->level;
+
+			} else {
+				pushError("Couldn't find the requested data");
 			}
+			
 		}
 
 	?>
 
 	<div class="page-header">
 		<h1>
-			Users
-			<small>Manage users</small>
+			<?= $PAGE_name ?>
+			<small>create and manage <?= $PAGE_name ?></small>
 		</h1>
 	</div>
 
 	<?php
-		if (!empty($_SESSION['ERRORS']))
-		{
-			outputErrors($_SESSION['ERRORS']);
-		}
+
+		// Now that we are just before the form starts, we can output any errors we might have pushed into the error-array.
+		// Calling this function outputs every error, earlier pushes to the error-array also stops the saving of the form.
+
+		outputErrors($_SESSION['ERRORS']);
+
 	?>
 
-	<div class="row">
-		<div class="span7">
+	<form class="form-horizontal" action="" method="post">
 
-			<form class="form-horizontal" action="" method="post">
-				
-				<div class="control-group">
-					<label class="control-label" for="inputTitle">E-mail</label>
-					<div class="controls">
-						<input type="text" name="mail" class="input-xlarge" id="inputTitle" value="<?= htmlspecialchars($formMail, ENT_QUOTES) ?>" maxlength="50" />
-						<p class="help-block">The users e-mail address is used as a Username to sign in to the system</p>
-					</div>
-				</div>
+		<div class="row">
+			<div class="span7">
 
-				<div class="control-group">
-					<label class="control-label" for="inputTitle">Password</label>
-					<div class="controls">
-						<input type="text" name="password" class="input-xlarge" id="inputTitle" value="<?= htmlspecialchars($formPassword, ENT_QUOTES) ?>" maxlength="50" />
-						<p class="help-block">Create a unique and good password with 4 to 45 characters</p>
-					</div>
-				</div>
+	<?php
 
-				<div class="control-group">
-					<label class="control-label">Admin level</label>
-					<div class="controls">
-						<label class="radio">
-							<input type="radio" name="level" id="inputLevel0" value="0"<?php if ($formLevel == 0) echo 'checked="checked"' ?> />
-							No access (user can no longer sign in)
-						</label>
-						<label class="radio">
-							<input type="radio" name="level" id="inputLevel1" value="1"<?php if ($formLevel == 1) echo 'checked="checked"' ?> />
-							Basic access
-						</label>
-						<label class="radio">
-							<input type="radio" name="level" id="inputLevel2" value="2"<?php if ($formLevel == 2) echo 'checked="checked"' ?> />
-							Full access
-						</label>
-						<p class="help-block">Asign a access level to the user, you need to sign out and then in again to activate new access level on yourself</p>
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" class="btn btn-primary">Save</button>
+		// This is the output area, where all the field's html should be generated for empty field's SQL inserts, and already filled in field's SQL updates.
+		// The fields data/content is generated in the upper parts of this document. Just call this function to get the html out.
 
-						<?php if ($user_id > 0) { ?>
-						<a href="?del=<?= $user_id ?>" class="btn btn-mini btn-danger">Delete</a>
-						<?php } ?>
-					</div>
-				</div>
+		outputFormFields();
 
-			</form>
+	?>
 
-		</div>
+			</div>
 
 
+			<div class="span4 offset1">
 
-		<div class="span4 offset1">
+				<a class="btn btn-success" href="?"><i class="icon-plus-sign icon-white"></i> Add new User</a>
 
-			<a class="btn btn-success" href="?"><i class="icon-plus-sign icon-white"></i> Add new User</a>
+				<hr />
 
-			<hr />
+				<h4>User list</h4>
+				<?php
+					$result = db2_getUsers();
 
-			<h4>User list</h4>
-			<?php
-				$result = db_getUsers();
-
-				if (!is_null($result))
-				{
-					while ( $row = $result->fetch_object() )
+					if (!is_null($result))
 					{
-						echo "<a href='?id=" . $row->id . "'>" . $row->mail . "</a><br />";
+						while ( $row = $result->fetch_object() )
+						{
+							echo "<a href='?id=" . $row->id . "'>" . $row->username . "</a><br />";
+						}
 					}
-				}
-				else
-				{
-					echo "<p>No Users found</p>";
-				}
-			?>
+					else
+					{
+						echo "<p>No Users found</p>";
+					}
+				?>
 
+			</div>
 		</div>
-	</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save</button>
+
+			<?php if ($this_id > 0) { ?>
+			<a href="?del=<?= $this_id ?>" class="btn btn-mini btn-danger">Delete this</a>
+			<?php } ?>
+		</div>
+
+	</form>
 
 
 <?php require('_footer.php'); ?>

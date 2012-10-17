@@ -13,7 +13,7 @@
 
 	$this_id = -1;
 	if (isset($_GET['id']))
-		$this_id = qsGet('id');
+		$this_id = $_GET['id'];
 
 	// Easier add fields to your form.
 	function addField($field) {

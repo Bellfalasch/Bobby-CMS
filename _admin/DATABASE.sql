@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `nxtcms_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `mail` varchar(255) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `lastlogin` datetime DEFAULT NULL,
   `level` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
