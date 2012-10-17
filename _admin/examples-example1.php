@@ -255,7 +255,7 @@
 
 	?>
 
-	<script language="javascript" type="text/javascript" src="<?= $SYS_folder ?>/_admin/assets/tiny_mce/tiny_mce.js"></script>
+	<script language="javascript" type="text/javascript" src="<?= $SYS_root . $SYS_folder ?>/assets/tiny_mce/tiny_mce.js"></script>
 	<script type="text/javascript">
 		tinyMCE.init({
 			// General options

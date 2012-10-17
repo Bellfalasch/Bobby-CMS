@@ -34,7 +34,7 @@
 					$_SESSION['id'] = $row->id;
 
 					ob_clean();
-					header('Location: ' . $SYS_folder . '/_admin/');
+					header('Location: ' . $SYS_root . $SYS_folder . '/');
 
 				} else {
 
@@ -62,7 +62,7 @@
 				unset( $_SESSION['id'] );
 
 				ob_clean();
-				header('Location: ' . $SYS_folder . '/_admin/');
+				header('Location: ' . $SYS_root . $SYS_folder . '/');
 			}
 		}
 	?>
@@ -75,10 +75,7 @@
 	</div>
 
 	<?php
-		if (!empty($_SESSION['ERRORS']))
-		{
-			outputErrors($_SESSION['ERRORS']);
-		}
+		outputErrors($_SESSION['ERRORS']);
 	?>
 
 	<div class="row">

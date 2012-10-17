@@ -70,67 +70,51 @@
 	</div>
 
 	<?php
-		if (!empty($_SESSION['ERRORS']))
-		{
-			outputErrors($_SESSION['ERRORS']);
-		}
+		
+		outputErrors($_SESSION['ERRORS']);
 
 		echo $errorMsg;
 	?>
 
+<form class="well form-inline" action="" method="post" enctype="multipart/form-data">
+
 	<div class="row">
 		<div class="span12">
 
-			<?php
-				if (isset($_SESSION['id'])) {
-			?>
-			
-			<form class="well form-inline" action="" method="post" enctype="multipart/form-data">
-				
-				<input size="25" name="file" type="file" />
+			<input size="25" name="file" type="file" />
 
-				<p>&nbsp;</p>
+			<p>&nbsp;</p>
 
-				<ul>
-					<li>Støtter JPG, PNG, GIF</li>
-					<li>Maksimal filstørrelse: <strong><?= round(IMG_MAX_SIZE / 1024) ?> MB</strong></li>
-					<li>Last opp en fil med samme filnavn som en eksisterende, hvis du ønsker å erstatte en fil.</li>
-					<hr />
-					<li>Forsidebilde: vil krympes ned til <strong><?= IMG_BIG_WIDTH ?></strong> piksle-bredde
-						<?php if (IMG_BIG_HEIGHT > 0) { ?>
-						og <strong><?= IMG_BIG_HEIGHT ?></strong> piksel-høyde.
-						<?php } ?>
-					</li>
-					<li>Normal bilde: vil krympes ned til <strong><?= IMG_MAX_WIDTH ?></strong> piksle-bredde
-						<?php if (IMG_MAX_HEIGHT > 0) { ?>
-						og <strong><?= IMG_MAX_HEIGHT ?></strong> piksel-høyde.
-						<?php } ?>
-					</li>
-					<li>Thumbnail: vil krympes ned til <strong><?= IMG_THUMB_WIDTH ?></strong> piksle-bredde
-						<?php if (IMG_THUMB_HEIGHT > 0) { ?>
-						og <strong><?= IMG_THUMB_HEIGHT ?></strong> piksel-høyde.
-						<?php } ?>
-					</li>
-				</ul>
-
+			<ul>
+				<li>Supports JPG, PNG, GIF</li>
+				<li>Maximum filesize: <strong><?= round(IMG_MAX_SIZE / 1024) ?> MB</strong></li>
+				<li>To replace a file, upload a file with the same filename as an existing one.</li>
 				<hr />
-				
-				<button type="submit" id="spara" name="spara" class="btn btn-primary">Last opp</button>
+				<li>Frontpage image: will be shrunk to <strong><?= IMG_BIG_WIDTH ?></strong> pixels wide
+					<?php if (IMG_BIG_HEIGHT > 0) { ?>
+					and <strong><?= IMG_BIG_HEIGHT ?></strong> pixels high.
+					<?php } ?>
+				</li>
+				<li>Standard size: will be shrunk to <strong><?= IMG_MAX_WIDTH ?></strong> pixels wide
+					<?php if (IMG_MAX_HEIGHT > 0) { ?>
+					and <strong><?= IMG_MAX_HEIGHT ?></strong> pixels high.
+					<?php } ?>
+				</li>
+				<li>Thumbnail: will be shrunk to <strong><?= IMG_THUMB_WIDTH ?></strong> pixels wide
+					<?php if (IMG_THUMB_HEIGHT > 0) { ?>
+					and <strong><?= IMG_THUMB_HEIGHT ?></strong> pixels high.
+					<?php } ?>
+				</li>
+			</ul>
 
-			</form>
-
-			<?php
-				} else {
-			?>
-
-				<p><a href="<?= $SYS_folder ?>/_admin/login.php">Sign in</a></p>
-
-			<?php
-				}
-			?>
+			<hr />
+			
+			<button type="submit" id="spara" name="spara" class="btn btn-primary">Upload</button>
 
 		</div>
 	</div>
+
+</form>
 
 
 <?php require('_footer.php'); ?>

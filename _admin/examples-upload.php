@@ -40,29 +40,26 @@
 	</div>
 
 	<?php
-		if (!empty($_SESSION['ERRORS']))
-		{
-			outputErrors($_SESSION['ERRORS']);
-		}
+		outputErrors($_SESSION['ERRORS']);
 	?>
+
+<form class="well form-inline" action="" method="post" enctype="multipart/form-data">
 
 	<div class="row">
 		<div class="span12">
 
-			<form class="well form-inline" action="" method="post" enctype="multipart/form-data">
-				
-				<p>
-					Select a file to upload (one at-a-time).
-				</p>
+			<p>
+				Select a file to upload (one at-a-time).
+			</p>
 
-				<input type="file" name="ufile" id="ufile" />
+			<input type="file" name="ufile" id="ufile" />
 
-				<button type="submit" class="btn">Upload</button>
-
-			</form>
+			<button type="submit" class="btn">Upload</button>
 
 		</div>
 	</div>
+
+</form>
 
 
 <?php require('_footer.php'); ?>

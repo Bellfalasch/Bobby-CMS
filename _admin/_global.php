@@ -13,7 +13,7 @@
 
 	
 	// Dynamic links etc based on where we have the code-files
-	$SYS_domain = $_SERVER['SERVER_NAME']
+	$SYS_domain = $_SERVER['SERVER_NAME'];
 	
 	if ($mapp != '')
 		$SYS_root = '/' . $mapp;
@@ -21,7 +21,7 @@
 	if ($mapp2 != '')
 		$SYS_folder = '/' . $mapp2;
 
-	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_folder;
+	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_root;
 
 	// Fetch name of currently viewed file without the .php
 	$currentFile = $_SERVER["SCRIPT_NAME"];
@@ -29,9 +29,11 @@
 	$currentFile = $parts[count($parts) - 1];
 	$SYS_script = str_replace('.php','',$currentFile);
 
+
 require( $SYS_incroot . '/inc/functions.php');
 require( $SYS_incroot . '/inc/database.php');
 require('_database.php');
+
 
 	// Set isPost
 	if ($_SERVER['REQUEST_METHOD'] === 'POST')
@@ -68,7 +70,7 @@ require('_database.php');
 		if ($SYS_script != "index" )
 		{
 			ob_clean();
-			header('Location: ' . $SYS_folder . '/_admin/index.php');
+			header('Location: ' . $SYS_root . $SYS_folder . '/index.php');
 		}
 	}
 	
