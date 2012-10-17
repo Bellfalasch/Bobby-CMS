@@ -2,31 +2,12 @@
 	/* Set up template variables */
 	$PAGE_name  = 'Users';
 	$PAGE_title = 'Admin/' . $PAGE_name;
-
-	$PAGE_form = array(); // Activate our smart form-builder
 ?>
+<?php require('_global.php'); ?>
 
 <?php
 
 	// See README.md in root for more information about how to set up and use the form-generator!
-
-	$this_id = -1;
-	if (isset($_GET['id']))
-		$this_id = $_GET['id'];
-
-	// Easier add fields to your form.
-	function addField($field) {
-		global $PAGE_form;
-		array_push($PAGE_form, $field);
-	}
-
-	// More easily call output of html for your forms down the page.
-	function outputFormFields() {
-		global $PAGE_form;
-		foreach ($PAGE_form as $fields) {
-			generateField($fields);
-		}
-	}
 
 	addField( array(
 		"label" => "Name:",
@@ -120,7 +101,9 @@
 		// User has posted (trying to save changes)
 		if (ISPOST)
 		{
-			
+			// This line is needed to call the validation-process of your form!
+			validateForm();
+
 			var_dump($PAGE_form); // For debugging
 
 			// Stupid way of getting all the form data into variables for use to save the data.

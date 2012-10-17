@@ -3,6 +3,7 @@
 	$PAGE_name  = 'Upload';
 	$PAGE_title = 'Admin/' . $PAGE_name;
 ?>
+<?php require('_global.php'); ?>
 <?php include('_header.php'); ?>
 
 

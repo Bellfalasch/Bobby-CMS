@@ -2,32 +2,12 @@
 	/* Set up template variables */
 	$PAGE_name  = 'Example 1';
 	$PAGE_title = 'Admin/' . $PAGE_name;
-	
-	$PAGE_form = array(); // This declaration is needed on every page that will be using the form-rendering system.
-						  // Also make sure the rest of the code comes first - before the _header.php.
 ?>
+<?php require('_global.php'); ?>
 
 <?php
 
 	// See README.md in root for more information about how to set up and use the form-generator!
-
-	$this_id = -1;
-	if (isset($_GET['id']))
-		$this_id = $_GET['id'];
-
-	// Easier add fields to your form.
-	function addField($field) {
-		global $PAGE_form;
-		array_push($PAGE_form, $field);
-	}
-
-	// More easily call output of html for your forms down the page.
-	function outputFormFields() {
-		global $PAGE_form;
-		foreach ($PAGE_form as $fields) {
-			generateField($fields);
-		}
-	}
 
 	addField( array(
 		"label" => "Title:",
@@ -140,8 +120,6 @@
 					);
 */
 ?>
-
-
 <?php require('_header.php'); ?>
 
 
@@ -166,6 +144,7 @@
 		// User has posted (trying to save changes)
 		if (ISPOST)
 		{
+			validateForm();
 			
 			var_dump($PAGE_form);
 

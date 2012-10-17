@@ -3,6 +3,7 @@
 	$PAGE_name  = 'Image';
 	$PAGE_title = 'Admin/' . $PAGE_name;
 ?>
+<?php require('_global.php'); ?>
 <?php require('_header.php'); ?>
 
 
