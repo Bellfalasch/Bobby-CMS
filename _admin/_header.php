@@ -33,7 +33,8 @@
 	} else {
 		$mapparArr = explode('/', $mappar); // dedicated server
 	}
-	$mapp = $mapparArr[count($mapparArr) - 3];
+	$mapp = $mapparArr[count($mapparArr) - 3]; // SYS_folder
+	$mapp2 = $mapparArr[count($mapparArr) - 2]; // SYS_adminfolder?
 
 ?>
 
@@ -80,6 +81,8 @@
 	// Push important debugging data to the footer:
 	pushDebug("
 			folder: $SYS_folder -
+			mapp: $mapp -
+			mapp2: $mapp2 -
 			script: $SYS_script -
 			sessionID: " . session_id() . "
 			");
@@ -429,28 +432,13 @@
 			// Check for "empty"-validation and if present push the empty-error.
 			if ((isset($errors["min"]) && isset($field["min"]) )) {
 				if (mb_strlen($content) < 1) {
-					/*
-					if (isset($errors["empty"])) {
-						if ($errors["empty"] != '')
-							pushError("<strong>" . $field["label"] . "</strong> " . $errors["empty"]);
-					} elseif (isset($errors["min"]) && isset($field["min"]) ) {
-					*/
-						if ($errors["min"] != '' && $field["min"] == 1)
-							pushError("<strong>" . $field["label"] . "</strong> " . $errors["min"]);
-					//}
-				} elseif (mb_strlen($content) > 0 && mb_strlen($content) < $field["min"]) {
-					//if (mb_strlen($content) < $field["min"]) {
+					if ($errors["min"] != '' && $field["min"] > 0)
 						pushError("<strong>" . $field["label"] . "</strong> " . $errors["min"]);
-					//}
-				}
-			}
-			/*
-			if (isset($errors["min"]) && isset($field["min"])) {
-				if (mb_strlen($content) < $field["min"]) {
+				} elseif (mb_strlen($content) > 0 && mb_strlen($content) < $field["min"]) {
 					pushError("<strong>" . $field["label"] . "</strong> " . $errors["min"]);
 				}
 			}
-			*/
+
 			if (isset($errors["max"]) && isset($field["max"])) {
 				if (mb_strlen($content) > $field["max"]) {
 					pushError("<strong>" . $field["label"] . "</strong> " . $errors["max"]);
