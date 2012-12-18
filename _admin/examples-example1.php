@@ -98,27 +98,6 @@
 					)
 	);
 */
-
-		// TODO: Shouldn't we be setting "size" as it's own setting per field? Instead of embedding and splitting out from the type-field?
-
-		// TODO: How to add on your 100% custom Fields and validation
-		//			(Kolla i ISPOST med pushError egen validering, och efter generateField-loopen peta ut egna fælt - done!)
-
-/*
-		// TODO: Fix this last issue:
-		// Not needed anymore because we use a new array_push-function. Only thing to sort out is the associative thing. because that
-		// will help shit loads when we're gonna save the form later ... Example: $PAGE_form["title"]["content"]
-		$PAGE_form = array(
-						"title" => $fieldTitle,
-						"alternative" => $fieldAlternative,
-						"wysiwyg" => $fieldWysiwyg,
-						"mail" => $fieldMail,
-						"minimal" => $fieldMinimal,
-						"zip1" => $fieldZip1,
-						"zip2" => $fieldZip2,
-						"image" => $fieldImage
-					);
-*/
 ?>
 <?php require('_header.php'); ?>
 
@@ -293,7 +272,7 @@
 	// Now that we are just before the form starts, we can output any errors we might have pushed into the error-array.
 	// Calling this function outputs every error, earlier pushes to the error-array also stops the saving of the form.
 
-	outputErrors($_SESSION['ERRORS']);
+	outputErrors($SYS_errors);
 
 ?>
 

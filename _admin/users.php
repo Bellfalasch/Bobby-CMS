@@ -229,7 +229,7 @@
 		// Now that we are just before the form starts, we can output any errors we might have pushed into the error-array.
 		// Calling this function outputs every error, earlier pushes to the error-array also stops the saving of the form.
 
-		outputErrors($_SESSION['ERRORS']);
+		outputErrors($SYS_errors);
 
 	?>
 

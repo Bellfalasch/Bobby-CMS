@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <?php
 
-	header('Content-type: text/html; charset=utf-8');
-	header('X-UA-Compatible: IE=edge,chrome=1');
-
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// Push important debugging data to the footer:
+	// Push some debugging data to the footer:
 	pushDebug("
 			folder: $SYS_folder -
 			mapp: $mapp -

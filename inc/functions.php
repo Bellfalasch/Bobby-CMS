@@ -28,13 +28,13 @@
 					</ul>
 				</div>";
 		}
-
 	}
 
 	// If the array sent in contains any items an error-block will be printed out.
 	function printDebugger()
 	{
-		$debug = $_SESSION['debug'];
+		global $SYS_debug;
+		$debug = $SYS_debug;
 
 		if (!empty($debug)) {
 			echo "
@@ -51,28 +51,34 @@
 		}
 	}
 
-	// Print any transactions-error from the database.
-	function printError_tran()
-	{
-		outputErrors( $_SESSION['ERRORS_TRAN'] );
-	}
-
 	// Fire an error which easily can be checked for and/or printed out.
 	function pushError($string)
 	{
-		array_push($_SESSION['ERRORS'], $string);
-	}
-
-	// Unique function for filling up on MySQL TRANSACTON-errors
-	function pushError_tran($string)
-	{
-		array_push($_SESSION['ERRORS_TRAN'], $string);
+		global $SYS_errors;
+		array_push($SYS_errors, $string);
 	}
 
 	// Put a post in the debug-array
 	function pushDebug($string)
 	{
-		array_push($_SESSION['debug'], $string);
+		global $SYS_debug;
+		array_push($SYS_debug, $string);
+	}
+
+	// TRANSACTIONS:
+
+	// Print any transactions-error from the database.
+	function printError_tran()
+	{
+		global $SYS_errors_tran;
+		outputErrors($SYS_errors_tran);
+	}
+
+	// Unique function for filling up on MySQL TRANSACTON-errors
+	function pushError_tran($string)
+	{
+		global $SYS_errors_tran;
+		array_push($SYS_errors_tran, $string);
 	}
 
 

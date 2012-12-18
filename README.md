@@ -18,6 +18,9 @@ Just drop the folder `_admin` in your project and extract these files in it. Of 
 Updates:
 ----------------
 
+### 0.9.2.1
+Just cleaned up the code a lot. Translated some comments, moved a few things around, re-organized a few functions, explained them better, and small things like that. Nothing that really makes any difference. Only "big" thing is that error and debug-handling now uses variables instead of sessions. No need for them to be stored in sessions really.
+
 ### 0.9.2
 You should now be able to rename the "_admin"-folder AS WELL as the root-folder, and move the files between live and localhost without any code change! I use a couple of new variables - SYS_root and SYS_folder - for this, where SYS_folder is known from before. Added section to this guide about our variables.
 
@@ -58,8 +61,8 @@ The future:
 Dependencies:
 ----------------
 You must use this admin on a project based on one of my other simple PHP templates, at minimum these files:
-**../inc/database.php** - Needed for accessing the database (password etc), and for processing all the SQL's in the admin's "_database.php".
-**../inc/functions.php** - The admin uses some basic functions added in this file, used by my other "PHP-templates".
+**../inc/database.php** - Needed for accessing the database (passwords etc), and for processing all the SQL's in the admin's own "_database.php".
+**../inc/functions.php** - The admin uses some basic functions added in this file, also used by my other "PHP-templates".
 
 This admin is based on **Bootstrap** by Twitter (included) and **TinyMCE** (included).
 
@@ -93,7 +96,7 @@ Example files are added just so you can see how I have set up different files in
 
 Our menu system
 ----------------
-Our menu system is far from done. You do need to edit the `_header.php` and adding the `li a` for each link. But I have at this moment at least eased the burden a bit with writing the `active`-class on the specific page you're actually visiting at the moment. It depends on two functions - at the moment placed just before the menu.
+Our menu system is far from done. You do need to edit the `_header.php` and add the `li a` for each link. But I have at this moment at least eased the burden a bit by writing the `active`-class on the specific page you're actually visiting. It depends on two functions - at the moment placed just before the menu.
 
 **isActiveOn** - This checks if the current file is the same as the menu you're printing, or if it is the child of it (using the `parent.php` + `parent-child.php` naming convention). This function is the main function for the menu. The submenu use this to show the correct submenu depending on the selected item in the main menu.
 

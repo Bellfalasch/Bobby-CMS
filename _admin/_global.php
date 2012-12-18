@@ -1,7 +1,19 @@
 <?
+	
 	//////////////////////////////////////////////////////////////////////////////////
-	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
+	// Settings:
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// Development mode on or off (outputs debug-data in the footer).
+	DEFINE('DEV_ENV', true);
+	
 
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// Set up system variables
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
 	$mappar = __FILE__;
 	if ( strpos($mappar,'\\') > 0 ) {
 		$mapparArr = explode('\\', $mappar); // localhost
@@ -10,10 +22,6 @@
 	}
 	$mapp = $mapparArr[count($mapparArr) - 3];
 	$mapp2 = $mapparArr[count($mapparArr) - 2];
-
-	
-	// Dynamic links etc based on where we have the code-files
-	$SYS_domain = $_SERVER['SERVER_NAME'];
 	
 	if ($mapp != '')
 		$SYS_root = '/' . $mapp;
@@ -23,17 +31,17 @@
 
 	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_root;
 
-	// Fetch name of currently viewed file without the .php
-	$currentFile = $_SERVER["SCRIPT_NAME"];
-	$parts = explode('/', $currentFile);
-	$currentFile = $parts[count($parts) - 1];
-	$SYS_script = str_replace('.php','',$currentFile);
 
-
+// Now that we have the incroot-variable we can fetch needed files
 require( $SYS_incroot . '/inc/functions.php');
 require( $SYS_incroot . '/inc/database.php');
 require('_database.php');
 
+
+	// Restart the error and debug variables with an empty array.
+	$SYS_errors = array();
+	$SYS_debug  = array();
+	$SYS_errors_tran = array(); // For transaction handling in the database (if needed)
 
 	// Set isPost
 	if ($_SERVER['REQUEST_METHOD'] === 'POST')
@@ -41,8 +49,23 @@ require('_database.php');
 	else
 		DEFINE('ISPOST', false);
 
-	// Define environment; development on or off.
-	DEFINE('DEV_ENV', true);
+	// Auto set up the current id of data so we can edit existing data
+	$PAGE_dbid = qsGet("id");
+	if ($PAGE_dbid == '')
+		$PAGE_dbid = -1;
+
+	// Dynamic links etc based on where we have the code-files
+	$SYS_domain = $_SERVER['SERVER_NAME'];
+
+	// Fetch name of currently viewed file without the .php
+	$TMP_parts = explode('/', $_SERVER["SCRIPT_NAME"]);
+	$TMP_currentFile = $TMP_parts[count($TMP_parts) - 1];
+	$SYS_script = str_replace('.php','',$TMP_currentFile);
+
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	// Set headers and such
+	//////////////////////////////////////////////////////////////////////////////////
 
 	if (DEV_ENV) {
 		error_reporting(E_ALL);
@@ -59,8 +82,13 @@ require('_database.php');
 	session_start();
 	//ob_clean();
 
-	$_SESSION['ERRORS'] = array(); // Reset the error-session on each page load =)
-	$_SESSION['debug'] = array();
+	header('Content-type: text/html; charset=utf-8');
+	header('X-UA-Compatible: IE=edge,chrome=1');
+
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	// Admin specifics
+	//////////////////////////////////////////////////////////////////////////////////
 
 	// Get system admin level into a variable.
 	if (isset($_SESSION['level'])) {
@@ -73,19 +101,12 @@ require('_database.php');
 			header('Location: ' . $SYS_root . $SYS_folder . '/index.php');
 		}
 	}
-	
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////
 
 	// Activate our smart form-builder
 	$PAGE_form = array();
 
-	// Auto set up the current id of data so we can edit existing data
-	$PAGE_dbid = qsGet("id");
-	if ($PAGE_dbid == '')
-		$PAGE_dbid = -1;
+
+	//////////////////////////////////////////////////////////////////////////////////
 
 	// Easier add fields to your form.
 	function addField($field) {
@@ -102,7 +123,7 @@ require('_database.php');
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// My magic forms:
+	// The magic forms:
 	//////////////////////////////////////////////////////////////////////////////////
 
 	function generateField($field) {

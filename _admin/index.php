@@ -75,7 +75,7 @@
 	</div>
 
 	<?php
-		outputErrors($_SESSION['ERRORS']);
+		outputErrors($SYS_errors);
 	?>
 
 	<div class="row">
