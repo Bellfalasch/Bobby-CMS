@@ -3,10 +3,10 @@
 
 	// Push some debugging data to the footer:
 	pushDebug("
-			folder: $SYS_folder -
-			mapp: $mapp -
-			mapp2: $mapp2 -
-			script: $SYS_script
+			SYS_folder: $SYS_folder -
+			SYS_root: $SYS_root -
+			SYS_incroot: $SYS_incroot -
+			SYS_script: $SYS_script
 			");
 
 	if (isset($_SESSION['username'])) {

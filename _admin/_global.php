@@ -3,42 +3,37 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	// Settings:
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// Development mode on or off (outputs debug-data in the footer).
 	DEFINE('DEV_ENV', true);
-	
 
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// Set up system variables
+	// Set up system variables:
 	//////////////////////////////////////////////////////////////////////////////////
 	
-	// Get the current folder the files are in, account for different servers returning the FILE-var differently.
-	$mappar = __FILE__;
-	if ( strpos($mappar,'\\') > 0 ) {
-		$mapparArr = explode('\\', $mappar); // localhost
+	// Get the current folder the files are in, account for different servers by exploding the variable differently.
+	$TMP_folders = __FILE__;
+	if ( strpos($TMP_folders,'\\') > 0 ) {
+		$TMP_foldersArr = explode('\\', $TMP_folders); // localhost
 	} else {
-		$mapparArr = explode('/', $mappar); // dedicated server
+		$TMP_foldersArr = explode('/', $TMP_folders); // dedicated server
 	}
-	$mapp = $mapparArr[count($mapparArr) - 3];
-	$mapp2 = $mapparArr[count($mapparArr) - 2];
-	
-	if ($mapp != '')
-		$SYS_root = '/' . $mapp;
-
-	if ($mapp2 != '')
-		$SYS_folder = '/' . $mapp2;
+	$SYS_root = '/' . $TMP_foldersArr[count($TMP_foldersArr) - 3];
+	$SYS_folder = '/' . $TMP_foldersArr[count($TMP_foldersArr) - 2];
 
 	$SYS_incroot = rtrim($_SERVER['DOCUMENT_ROOT'],"/") . $SYS_root;
 
 
-// Now that we have the incroot-variable we can fetch needed files
-require( $SYS_incroot . '/inc/functions.php');
-require( $SYS_incroot . '/inc/database.php');
-require('_database.php');
+	//////////////////////////////////////////////////////////////////////////////////
+	// Now that we have the incroot-variable we can fetch needed includes
+	require($SYS_incroot . '/inc/functions.php');
+	require($SYS_incroot . '/inc/database.php');
+	require('_database.php');
+	//////////////////////////////////////////////////////////////////////////////////
 
 
-	// Restart the error and debug variables with an empty array.
+	// Start up the error and debug variables with an empty array.
 	$SYS_errors = array();
 	$SYS_debug  = array();
 	$SYS_errors_tran = array(); // For transaction handling in the database (if needed)
@@ -62,9 +57,9 @@ require('_database.php');
 	$TMP_currentFile = $TMP_parts[count($TMP_parts) - 1];
 	$SYS_script = str_replace('.php','',$TMP_currentFile);
 
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
-	// Set headers and such
+	// Set headers and such:
 	//////////////////////////////////////////////////////////////////////////////////
 
 	if (DEV_ENV) {
@@ -80,14 +75,13 @@ require('_database.php');
 
 	ob_start();
 	session_start();
-	//ob_clean();
 
 	header('Content-type: text/html; charset=utf-8');
 	header('X-UA-Compatible: IE=edge,chrome=1');
 
 	
 	//////////////////////////////////////////////////////////////////////////////////
-	// Admin specifics
+	// Admin specifics:
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Get system admin level into a variable.
@@ -107,6 +101,8 @@ require('_database.php');
 
 
 	//////////////////////////////////////////////////////////////////////////////////
+	// The magic forms ( ... should have it's own file, just to include to implement):
+	//////////////////////////////////////////////////////////////////////////////////
 
 	// Easier add fields to your form.
 	function addField($field) {
@@ -121,10 +117,6 @@ require('_database.php');
 			generateField($fields);
 		}
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	// The magic forms:
-	//////////////////////////////////////////////////////////////////////////////////
 
 	function generateField($field) {
 		
@@ -246,40 +238,6 @@ require('_database.php');
 			if ($thisSetDir == "")
 				$areaType = "text";
 		}
-/*
-		<select id="inputImage" name="image" class="span3">
-		<?php
-			// * Hæmta alla filer i mappen
-			$dir = "../images/campaigns/";
-			$files = scandir($dir);
-			$strSelected = "";
-			$somethingChecked = false;
-
-			foreach($files as $key => $value)
-			{
-				if ($value != '.' && $value != '..')
-				{
-					if ( $formImage === $value ) {
-						$strSelected = ' selected="selected"';
-						$somethingChecked = true;
-					} else
-						$strSelected = '';
-						
-					echo '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
-				}
-			}
-		?>
-		<?php
-			if ($somethingChecked) {
-				$strSelected = '';
-			} else {
-				$strSelected = ' selected="selected"';
-			}
-			echo "<option disabled='disabled'></option>";
-			echo '<option value=""' . $strSelected .'>- Ikke bruk bilde -</option>';
-		?>
-		</select>
-*/
 
 		// Generate the actual form field based on the "type" setting. Currently only text and area(rows*columns) supported.
 		switch ( mb_substr($areaType,0,4) ) {
@@ -319,8 +277,6 @@ require('_database.php');
 
 								if (strpos($thisSetFormats,$fileEnding[1]) > -1 ) {
 									$write = true;
-//								} else {
-//									$write = false;
 								}
 							}
 						} else {
@@ -348,36 +304,6 @@ require('_database.php');
 					$strField .= "<option disabled='disabled'></option>";
 					$strField .= '<option value=""' . $strSelected .'>- ' . $thisSetUnselectable . ' -</option>';
 				}
-/*
-			// * Hæmta alla filer i mappen
-			$dir = "../images/campaigns/";
-			$files = scandir($dir);
-			$strSelected = "";
-			$somethingChecked = false;
-
-			foreach($files as $key => $value)
-			{
-				if ($value != '.' && $value != '..')
-				{
-					if ( $formImage === $value ) {
-						$strSelected = ' selected="selected"';
-						$somethingChecked = true;
-					} else
-						$strSelected = '';
-						
-					echo '<option value="' . $value . '"' . $strSelected . '>' . $value . '</option>';
-				}
-			}
-
-			if ($somethingChecked) {
-				$strSelected = '';
-			} else {
-				$strSelected = ' selected="selected"';
-			}
-			echo "<option disabled='disabled'></option>";
-			echo '<option value=""' . $strSelected .'>- Ikke bruk bilde -</option>';
-*/
-//					" . $thisContent . "
 
 				$strField .= "</select>";
 				break;
@@ -486,7 +412,8 @@ require('_database.php');
 
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// NAVIGATION MENU
+	// Navigation menu:
+	//////////////////////////////////////////////////////////////////////////////////
 
 	// Return true if we are on a page connected to said menu, or a subpage.
 	// Only works when the naming convention "parent.php" + "parent-child.php" is used.
@@ -516,7 +443,5 @@ require('_database.php');
 		if ( isActiveOn($pages) )
 			echo ' class="active"';
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////
 
 ?>
