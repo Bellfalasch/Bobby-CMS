@@ -26,7 +26,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf8" />
 	<title><?= $PAGE_title ?> - [SITENAME]</title>
-	<link rel="shortcut icon" href="<?= $SYS_folder ?>/favicon.ico">
+	<link rel="shortcut icon" href="<?= $SYS_root ?>/favicon.ico">
 	<link rel="stylesheet" href="<?= $SYS_root . $SYS_folder ?>/assets/bootstrap.min.css" />
 	<link rel="stylesheet" href="<?= $SYS_root . $SYS_folder ?>/assets/admin.css?v=<?php if (DEV_ENV) echo rand(); ?>" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
