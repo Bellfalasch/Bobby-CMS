@@ -14,11 +14,11 @@
 	
 	// Get the current folder the files are in, account for different servers by exploding the variable differently.
 	$TMP_folders = __FILE__;
-	if ( strpos($TMP_folders,'\\') > 0 ) {
+	if ( strpos($TMP_folders,'\\') > 0 )
 		$TMP_foldersArr = explode('\\', $TMP_folders); // localhost
-	} else {
+	else
 		$TMP_foldersArr = explode('/', $TMP_folders); // dedicated server
-	}
+
 	$SYS_root = '/' . $TMP_foldersArr[count($TMP_foldersArr) - 3];
 	$SYS_folder = '/' . $TMP_foldersArr[count($TMP_foldersArr) - 2];
 
