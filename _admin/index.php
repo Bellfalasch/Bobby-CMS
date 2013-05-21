@@ -14,7 +14,7 @@
 			$formMail = formGet('cms_mail');
 			$formPass = formGet('cms_pass');
 
-			$result = db2_getUserLoginInfo( array('username' => $formMail) );
+			$result = db2_getUserLoginInfo( array('mail' => $formMail) );
 
 			if (!is_null($result))
 			{
@@ -87,8 +87,8 @@
 			
 			<form class="well form-inline" action="" method="post">
 				
-				<input type="text" name="cms_mail" class="input-large" placeholder="E-post" autocomplete="false" />
-				<input type="password" name="cms_pass" class="input-medium" placeholder="Passord" autocomplete="false" />
+				<input type="text" name="cms_mail" class="input-large" placeholder="E-mail" autocomplete="false" />
+				<input type="password" name="cms_pass" class="input-medium" placeholder="Password" autocomplete="false" />
 
 				<button type="submit" class="btn">Sign in</button>
 
