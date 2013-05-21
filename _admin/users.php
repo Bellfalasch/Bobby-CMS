@@ -119,7 +119,7 @@
 			}
 
 			// If no errors:
-			if (empty($_SESSION['ERRORS'])) {
+			if (empty($SYS_errors)) {
 				
 				echo "<div class='alert alert-block alert-success'><h4>Success</h4><p><strong>Your posted data validated!</strong> (we have not set this up yet to save to your database =/)</p></div>";
 
