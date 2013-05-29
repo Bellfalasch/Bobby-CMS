@@ -81,7 +81,7 @@
 		{
 			$del_id = trim( $_GET['del'] );
 
-			$del = db2_delDiscount( array(
+			$del = db2_delUser( array(
 						'id' => $del_id
 					) );
 
