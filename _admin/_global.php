@@ -172,7 +172,7 @@
 
 		$strField = "
 				<div class=\"control-group\">
-					<label class=\"control-label\" for=\"input" . $thisId . "\">" . $field["label"] . "$demanded</label>
+					<label class=\"control-label\" for=\"" . $thisId . "\">" . $field["label"] . "$demanded</label>
 					<div class=\"controls\">
 						";
 
